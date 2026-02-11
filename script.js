@@ -82,82 +82,84 @@ function createCard(cardData, folderName) {
    OPEN POPUP
 ========================= */
 function openExpandedCard(cardData, folderName) {
-  // Show the overlay and pop-up content only after a card is clicked
-  overlay.classList.add("visible");
-
-  // Create the content of the pop-up dynamically
   expandedCard.innerHTML = "";  // Clear any existing content in the pop-up
 
-  // Add image
-  const image = document.createElement("img");
-  image.src = `Cards/${folderName}/${cardData.image}`;
-  image.style.width = "200px";  // Resize the image
-  image.style.borderRadius = "8px";
-  image.style.marginBottom = "15px";
-  
-  expandedCard.appendChild(image);
+  // Check if cardData is available, and only create content if it's valid
+  if (cardData && folderName) {
+    overlay.classList.add("visible");
 
-  // Add title
-  const title = document.createElement("h2");
-  title.textContent = cardData.name;
-  expandedCard.appendChild(title);
+    const image = document.createElement("img");
+    image.src = `Cards/${folderName}/${cardData.image}`;
+    image.style.width = "200px";  // Resize the image
+    image.style.borderRadius = "8px";
+    image.style.marginBottom = "15px";
+    
+    expandedCard.appendChild(image);
 
-  const divider = document.createElement("hr");
-  expandedCard.appendChild(divider);
+    const title = document.createElement("h2");
+    title.textContent = cardData.name;
+    expandedCard.appendChild(title);
 
-  // Stats
-  const statsContainer = document.createElement("div");
-  statsContainer.classList.add("stats");
+    const divider = document.createElement("hr");
+    expandedCard.appendChild(divider);
 
-  if (cardData.stats) {
-    for (const stat in cardData.stats) {
-      const statBox = document.createElement("div");
-      statBox.classList.add("stat-rect");
-      statBox.innerHTML = `<strong>${stat.toUpperCase()}</strong>: ${cardData.stats[stat]}`;
-      statsContainer.appendChild(statBox);
+    // Stats
+    const statsContainer = document.createElement("div");
+    statsContainer.classList.add("stats");
+
+    if (cardData.stats) {
+      for (const stat in cardData.stats) {
+        const statBox = document.createElement("div");
+        statBox.classList.add("stat-rect");
+        statBox.innerHTML = `<strong>${stat.toUpperCase()}</strong>: ${cardData.stats[stat]}`;
+        statsContainer.appendChild(statBox);
+      }
     }
-  }
-  expandedCard.appendChild(statsContainer);
+    expandedCard.appendChild(statsContainer);
 
-  // Abilities
-  const abilitySection = document.createElement("div");
+    // Abilities
+    const abilitySection = document.createElement("div");
 
-  if (cardData.abilities && Array.isArray(cardData.abilities)) {
-    cardData.abilities.forEach(ability => {
-      const abilityBox = document.createElement("div");
-      abilityBox.classList.add("ability");
+    if (cardData.abilities && Array.isArray(cardData.abilities)) {
+      cardData.abilities.forEach(ability => {
+        const abilityBox = document.createElement("div");
+        abilityBox.classList.add("ability");
 
-      abilityBox.innerHTML = `
-        <h3>${ability.name}</h3>
-        <p><strong>Energy Cost:</strong> ${ability.energy}</p>
-        <p>${ability.description}</p>
-      `;
+        abilityBox.innerHTML = `
+          <h3>${ability.name}</h3>
+          <p><strong>Energy Cost:</strong> ${ability.energy}</p>
+          <p>${ability.description}</p>
+        `;
 
-      abilitySection.appendChild(abilityBox);
+        abilitySection.appendChild(abilityBox);
+      });
+    }
+    expandedCard.appendChild(abilitySection);
+
+    // Description
+    const description = document.createElement("div");
+    description.classList.add("ability");
+    description.innerHTML = `
+      <h3>Description</h3>
+      <p>${cardData.description || ""}</p>
+    `;
+
+    expandedCard.appendChild(description);
+
+    // Add a "Back to Cards" button
+    const backButton = document.createElement("button");
+    backButton.textContent = "Back to Cards";
+    backButton.classList.add("back-button");
+
+    backButton.addEventListener("click", () => {
+      overlay.classList.remove("visible");  // Close the pop-up when clicked
     });
+
+    expandedCard.appendChild(backButton);
+  } else {
+    // If there's no valid card data, hide the overlay immediately
+    overlay.classList.remove("visible");
   }
-  expandedCard.appendChild(abilitySection);
-
-  // Description
-  const description = document.createElement("div");
-  description.classList.add("ability");
-  description.innerHTML = `
-    <h3>Description</h3>
-    <p>${cardData.description || ""}</p>
-  `;
-
-  expandedCard.appendChild(description);
-
-  // Add a "Back to Cards" button
-  const backButton = document.createElement("button");
-  backButton.textContent = "Back to Cards";
-  backButton.classList.add("back-button");
-
-  backButton.addEventListener("click", () => {
-    overlay.classList.remove("visible");  // Close the pop-up when clicked
-  });
-
-  expandedCard.appendChild(backButton);
 }
 
 /* =========================
@@ -165,7 +167,7 @@ function openExpandedCard(cardData, folderName) {
 ========================= */
 overlay.addEventListener("click", (e) => {
   if (e.target === overlay) {
-    overlay.classList.remove("visible");  // Close the pop-up when clicking outside
+    overlay.classList.remove("visible");
   }
 });
 
