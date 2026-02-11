@@ -2,8 +2,8 @@ const cardGrid = document.getElementById("card-grid");
 const overlay = document.getElementById("card-overlay");
 const expandedCard = document.getElementById("expanded-card");
 
-/* Make sure overlay is hidden on load */
-overlay.classList.remove("active");
+/* FORCE HIDE ON LOAD */
+overlay.style.display = "none";
 
 /* =========================
    LOAD CARDS BASED ON TEAM
