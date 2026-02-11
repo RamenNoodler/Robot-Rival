@@ -181,7 +181,7 @@ function openExpandedCard(cardData, folderName) {
   expandedCard.appendChild(container);
 
   // Show overlay (force it)
-  overlay.style.display = "flex";
+  overlay.classList.add("visible");
 
   // Add a "Back" button
   const backButton = document.createElement("button");
@@ -189,7 +189,7 @@ function openExpandedCard(cardData, folderName) {
   backButton.classList.add("back-button");
 
   backButton.addEventListener("click", () => {
-    overlay.style.display = "none";  // Close the pop-up when clicked
+    overlay.classList.remove("visible");  // Close the pop-up when clicked
   });
 
   expandedCard.appendChild(backButton);
@@ -200,7 +200,7 @@ function openExpandedCard(cardData, folderName) {
 ========================= */
 overlay.addEventListener("click", (e) => {
   if (e.target === overlay) {
-    overlay.style.display = "none";  // Close the pop-up when clicking outside
+    overlay.classList.remove("visible");  // Close the pop-up when clicking outside
   }
 });
 
