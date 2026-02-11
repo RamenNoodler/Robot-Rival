@@ -32,6 +32,7 @@ async function loadCards() {
     const columns = 4;
 
     for (let i = 0; i < cardNames.length; i++) {
+
       const folderName = cardNames[i];
 
       const cardResponse = await fetch(`Cards/${folderName}/data.json`);
@@ -156,12 +157,12 @@ function openExpandedCard(cardData, folderName) {
 
   expandedCard.appendChild(title);
   expandedCard.appendChild(image);
-  expandedCard.appendChild(divider);
   expandedCard.appendChild(statsContainer);
   expandedCard.appendChild(abilitySection);
   expandedCard.appendChild(description);
 
-  overlay.classList.remove("hidden");
+  // Hard code to make overlay visible (force the pop-up to show)
+  overlay.style.display = "flex";
 }
 
 /* =========================
@@ -169,7 +170,7 @@ function openExpandedCard(cardData, folderName) {
 ========================= */
 overlay.addEventListener("click", (e) => {
   if (e.target === overlay) {
-    overlay.classList.add("hidden");
+    overlay.style.display = "none";  // Hide the overlay when clicking outside
   }
 });
 
