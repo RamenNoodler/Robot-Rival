@@ -23,11 +23,12 @@
   display: flex;
   gap: 20px;
   justify-content: space-between;
+  padding: 20px;
 }
 
 /* Left side - image */
 .image-container {
-  flex: 0 0 220px; /* Set image size */
+  flex: 0 0 220px; /* Control the image size */
   display: flex;
   justify-content: center;
 }
@@ -68,10 +69,16 @@
   background-color: #555;
 }
 
-/* Ensure image is not stretched */
+/* Ensure image scales properly without stretching */
 .popup-card img {
-  width: 100%; /* Ensure the image scales properly */
-  max-width: 200px; /* Prevent stretching by limiting max width */
-  border-radius: 8px;
+  max-width: 200px; /* Resize the image to fit */
+  height: auto; /* Keep aspect ratio */
   margin-right: 20px;
+  border-radius: 8px;
+}
+
+/* For better spacing and structure */
+.popup-card h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
 }
