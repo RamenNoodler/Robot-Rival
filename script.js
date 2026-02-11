@@ -59,7 +59,9 @@ function createCard(cardData, folderName) {
 ========================= */
 function openPopup(cardData, folderName) {
 
-  expandedCard.innerHTML = "";  // Clear the pop-up content first
+  // First, hide the overlay and clear the content before opening new one
+  overlay.classList.add("active");
+  expandedCard.innerHTML = "";  // Clear any previous content
 
   /* --- IMAGE --- */
   const image = document.createElement("img");
@@ -116,8 +118,6 @@ function openPopup(cardData, folderName) {
   expandedCard.appendChild(descriptionSection);
   expandedCard.appendChild(hpSection);  // Add HP Section
   expandedCard.appendChild(abilitiesContainer);
-
-  overlay.classList.add("active");
 }
 
 /* =========================
