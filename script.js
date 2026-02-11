@@ -91,9 +91,10 @@ function createCard(cardData, folderName) {
   card.appendChild(img);
   card.appendChild(name);
 
-  card.addEventListener("click", () => {
-    openExpandedCard(cardData, folderName);
-  });
+card.addEventListener("click", () => {
+  alert("Card clicked!"); // Debugging to confirm click works
+  openExpandedCard(cardData, folderName);
+});
 
   return card;
 }
