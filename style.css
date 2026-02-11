@@ -18,39 +18,21 @@
   display: flex; /* Show the overlay when visible class is added */
 }
 
-/* Flex container for image and content */
-.popup-container {
-  display: flex;
-  gap: 20px;
-  justify-content: space-between;
-}
-
-/* Left side - image */
-.image-container {
-  flex: 0 0 220px; /* Set image size */
-  display: flex;
-  justify-content: center;
-}
-
-/* Right side - content */
-.content-container {
-  flex: 1;
+.popup-card {
+  background-color: #1a1a1a;
   padding: 20px;
+  color: #fff;
+  border-radius: 10px;
+  max-width: 600px;
+  margin: 20px;
 }
 
-/* Stats and abilities */
-.stats, .ability {
-  background: #2a2a2a;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 6px;
-}
-
-.stat-rect {
-  background: #1b1f28;
-  padding: 8px;
-  margin: 5px 0;
-  border-radius: 4px;
+/* Ensure image scales properly without stretching */
+.popup-card img {
+  max-width: 200px; /* Resize the image to fit */
+  height: auto; /* Keep aspect ratio */
+  margin-right: 20px;
+  border-radius: 8px;
 }
 
 /* Back button */
@@ -68,16 +50,9 @@
   background-color: #555;
 }
 
-/* Ensure image scales properly without stretching */
-.popup-card img {
-  max-width: 200px; /* Resize the image to fit */
-  height: auto; /* Keep aspect ratio */
-  margin-right: 20px;
-  border-radius: 8px;
-}
-
-/* For better spacing and structure */
-.popup-card h2 {
-  font-size: 24px;
-  margin-bottom: 15px;
+.stat-rect {
+  background: #2a2a2a;
+  padding: 8px;
+  margin: 5px 0;
+  border-radius: 4px;
 }
