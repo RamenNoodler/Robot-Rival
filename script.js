@@ -2,11 +2,12 @@ const cardGrid = document.getElementById("card-grid");
 const overlay = document.getElementById("card-overlay");
 const expandedCard = document.getElementById("expanded-card");
 
+
 /* =========================
    LOAD ALL CARDS
 ========================= */
 async function loadCards() {
-
+document.getElementById("card-overlay").style.display = "flex";  // Force the pop-up to show immediately
   cardGrid.innerHTML = "<h2>Loading cards...</h2>";
 
   try {
