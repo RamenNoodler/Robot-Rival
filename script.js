@@ -1,7 +1,10 @@
-const cardGrid = document.getElementById("cardGrid");
-const cardDetail = document.getElementById("cardDetail");
+const cardGrid = document.getElementById("card-grid");
+const overlay = document.getElementById("card-overlay");
+const expandedCard = document.getElementById("expanded-card");
 
-/* Load all cards */
+/* =========================
+   LOAD ALL CARDS
+========================= */
 async function loadCards() {
   try {
     const indexResponse = await fetch("Cards/cards-index.json");
@@ -14,14 +17,14 @@ async function loadCards() {
     const columns = 4;
 
     for (let i = 0; i < cardNames.length; i++) {
-      const cardName = cardNames[i];
+      const folderName = cardNames[i];
 
-      const cardResponse = await fetch(`Cards/${cardName}/data.json`);
+      const cardResponse = await fetch(`Cards/${folderName}/data.json`);
       const cardData = await cardResponse.json();
 
-      const cardElement = createCard(cardData, cardName);
+      const cardElement = createCard(cardData, folderName);
 
-      /* Snake pattern logic */
+      /* Snake pattern layout */
       if (rowIndex % 2 === 1) {
         cardElement.style.gridColumn = columns - colIndex;
       } else {
@@ -36,12 +39,15 @@ async function loadCards() {
         rowIndex++;
       }
     }
+
   } catch (err) {
     console.error("Failed to load cards:", err);
   }
 }
 
-/* Create card tile */
+/* =========================
+   CREATE CARD TILE
+========================= */
 function createCard(cardData, folderName) {
   const card = document.createElement("div");
   card.classList.add("card");
@@ -56,51 +62,92 @@ function createCard(cardData, folderName) {
   card.appendChild(img);
   card.appendChild(name);
 
-  card.addEventListener("click", () => openCardDetail(cardData, folderName));
+  card.addEventListener("click", () => {
+    openExpandedCard(cardData, folderName);
+  });
 
   return card;
 }
 
-/* Open full-page detail */
-function openCardDetail(cardData, folderName) {
-  cardGrid.style.display = "none";
-  cardDetail.classList.remove("hidden");
+/* =========================
+   OPEN POPUP
+========================= */
+function openExpandedCard(cardData, folderName) {
 
-  document.getElementById("detailImage").src =
-    `Cards/${folderName}/${cardData.image}`;
+  expandedCard.innerHTML = "";
 
-  document.getElementById("detailSPD").textContent =
-    cardData.stats.spd || "-";
-  document.getElementById("detailATK").textContent =
-    cardData.stats.atk || "-";
-  document.getElementById("detailDEF").textContent =
-    cardData.stats.def || "-";
-  document.getElementById("detailHP").textContent =
-    cardData.stats.hp || "-";
+  /* Title */
+  const title = document.createElement("h2");
+  title.textContent = cardData.name;
 
-  document.getElementById("ability1Name").textContent =
-    cardData.abilities?.[0]?.name || "";
-  document.getElementById("ability1Energy").textContent =
-    cardData.abilities?.[0]?.energy || "";
-  document.getElementById("ability1Desc").textContent =
-    cardData.abilities?.[0]?.description || "";
+  /* Image */
+  const image = document.createElement("img");
+  image.src = `Cards/${folderName}/${cardData.image}`;
+  image.style.width = "100%";
+  image.style.borderRadius = "8px";
+  image.style.marginBottom = "15px";
 
-  document.getElementById("ability2Name").textContent =
-    cardData.abilities?.[1]?.name || "";
-  document.getElementById("ability2Energy").textContent =
-    cardData.abilities?.[1]?.energy || "";
-  document.getElementById("ability2Desc").textContent =
-    cardData.abilities?.[1]?.description || "";
+  /* Divider */
+  const divider = document.createElement("hr");
 
-  document.getElementById("detailDescription").textContent =
-    cardData.description || "";
+  /* Stats Section */
+  const statsContainer = document.createElement("div");
+  statsContainer.classList.add("stats");
+
+  for (const stat in cardData.stats) {
+    const statBox = document.createElement("div");
+    statBox.classList.add("stat-rect");
+    statBox.innerHTML = `<strong>${stat.toUpperCase()}</strong>: ${cardData.stats[stat]}`;
+    statsContainer.appendChild(statBox);
+  }
+
+  /* Abilities Section */
+  const abilitySection = document.createElement("div");
+
+  if (cardData.abilities && Array.isArray(cardData.abilities)) {
+    cardData.abilities.forEach(ability => {
+      const abilityBox = document.createElement("div");
+      abilityBox.classList.add("ability");
+
+      abilityBox.innerHTML = `
+        <h3>${ability.name}</h3>
+        <p><strong>Energy Cost:</strong> ${ability.energy}</p>
+        <p>${ability.description}</p>
+      `;
+
+      abilitySection.appendChild(abilityBox);
+    });
+  }
+
+  /* Description Section */
+  const description = document.createElement("div");
+  description.classList.add("ability");
+  description.innerHTML = `
+    <h3>Description</h3>
+    <p>${cardData.description || ""}</p>
+  `;
+
+  /* Append Everything */
+  expandedCard.appendChild(title);
+  expandedCard.appendChild(image);
+  expandedCard.appendChild(divider);
+  expandedCard.appendChild(statsContainer);
+  expandedCard.appendChild(abilitySection);
+  expandedCard.appendChild(description);
+
+  overlay.classList.remove("hidden");
 }
 
-/* Back to grid */
-function closeDetail() {
-  cardDetail.classList.add("hidden");
-  cardGrid.style.display = "grid";
-}
+/* =========================
+   CLOSE POPUP
+========================= */
+overlay.addEventListener("click", (e) => {
+  if (e.target === overlay) {
+    overlay.classList.add("hidden");
+  }
+});
 
-/* Start app */
+/* =========================
+   START APP
+========================= */
 loadCards();
