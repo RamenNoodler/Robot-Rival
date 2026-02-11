@@ -2,18 +2,26 @@ const cardGrid = document.getElementById("card-grid");
 const overlay = document.getElementById("card-overlay");
 const expandedCard = document.getElementById("expanded-card");
 
+/* Make sure overlay is hidden on load */
+overlay.classList.remove("active");
+
 /* =========================
-   LOAD CARDS
+   LOAD CARDS BASED ON TEAM
 ========================= */
-async function loadCards() {
-  cardGrid.innerHTML = "";
+async function loadCards(team = '') {
+  cardGrid.innerHTML = "";  // Clear previous cards
 
   try {
     const indexResponse = await fetch("Cards/cards-index.json");
     const indexData = await indexResponse.json();
 
-    for (const folderName of indexData.cards) {
+    // Filter cards by the selected team
+    const filteredCards = indexData.cards.filter(card => {
+      if (team === '') return true; // If no team selected, show all
+      return card.team.toLowerCase() === team.toLowerCase(); // Only show cards for the selected team
+    });
 
+    for (const folderName of filteredCards) {
       const cardResponse = await fetch(`Cards/${folderName}/data.json`);
       const cardData = await cardResponse.json();
 
@@ -30,7 +38,6 @@ async function loadCards() {
    CREATE CARD TILE
 ========================= */
 function createCard(cardData, folderName) {
-
   const card = document.createElement("div");
   card.classList.add("card");
 
@@ -55,10 +62,7 @@ function createCard(cardData, folderName) {
    OPEN POPUP
 ========================= */
 function openPopup(cardData, folderName) {
-
-  // Clear the content and hide the overlay initially before adding content
-  expandedCard.innerHTML = ""; // Clear previous content
-  overlay.style.display = "flex";  // Make sure the overlay is shown only when needed
+  expandedCard.innerHTML = "";  // Clear the pop-up content first
 
   /* --- IMAGE --- */
   const image = document.createElement("img");
@@ -128,11 +132,13 @@ overlay.addEventListener("click", (e) => {
 });
 
 /* =========================
-   HIDE OVERLAY BY DEFAULT ON PAGE LOAD
+   CATEGORY BUTTONS (Team Selection)
 ========================= */
-document.addEventListener("DOMContentLoaded", () => {
-  overlay.style.display = "none"; // Overlay is hidden on page load
-});
+document.getElementById("teamobsidian").addEventListener("click", () => loadCards("Team Obsidian"));
+document.getElementById("teamprotostar").addEventListener("click", () => loadCards("Team Protostar"));
+document.getElementById("teamneutral").addEventListener("click", () => loadCards("Team Neutral"));
 
-/* START */
-loadCards();
+/* =========================
+   INITIAL LOAD
+========================= */
+loadCards(); // Load all cards initially
