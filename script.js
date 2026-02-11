@@ -2,12 +2,10 @@ const cardGrid = document.getElementById("card-grid");
 const overlay = document.getElementById("card-overlay");
 const expandedCard = document.getElementById("expanded-card");
 
-
 /* =========================
    LOAD ALL CARDS
 ========================= */
 async function loadCards() {
-document.getElementById("card-overlay").style.display = "flex";  // Force the pop-up to show immediately
   cardGrid.innerHTML = "<h2>Loading cards...</h2>";
 
   try {
@@ -18,7 +16,6 @@ document.getElementById("card-overlay").style.display = "flex";  // Force the po
     }
 
     const indexData = await indexResponse.json();
-
     const cardNames = indexData.cards;
 
     if (!cardNames || cardNames.length === 0) {
@@ -33,7 +30,6 @@ document.getElementById("card-overlay").style.display = "flex";  // Force the po
     const columns = 4;
 
     for (let i = 0; i < cardNames.length; i++) {
-
       const folderName = cardNames[i];
 
       const cardResponse = await fetch(`Cards/${folderName}/data.json`);
@@ -77,7 +73,6 @@ document.getElementById("card-overlay").style.display = "flex";  // Force the po
    CREATE CARD TILE
 ========================= */
 function createCard(cardData, folderName) {
-
   const card = document.createElement("div");
   card.classList.add("card");
 
@@ -91,10 +86,10 @@ function createCard(cardData, folderName) {
   card.appendChild(img);
   card.appendChild(name);
 
-card.addEventListener("click", () => {
-  alert("Card clicked!"); // Debugging to confirm click works
-  openExpandedCard(cardData, folderName);
-});
+  // Add event listener to the card to open the pop-up
+  card.addEventListener("click", function () {
+    openExpandedCard(cardData, folderName);
+  });
 
   return card;
 }
@@ -103,7 +98,6 @@ card.addEventListener("click", () => {
    OPEN POPUP
 ========================= */
 function openExpandedCard(cardData, folderName) {
-
   expandedCard.innerHTML = "";
 
   const title = document.createElement("h2");
@@ -135,7 +129,6 @@ function openExpandedCard(cardData, folderName) {
 
   if (cardData.abilities && Array.isArray(cardData.abilities)) {
     cardData.abilities.forEach(ability => {
-
       const abilityBox = document.createElement("div");
       abilityBox.classList.add("ability");
 
@@ -163,7 +156,7 @@ function openExpandedCard(cardData, folderName) {
   expandedCard.appendChild(abilitySection);
   expandedCard.appendChild(description);
 
-  // Hard code to make overlay visible (force the pop-up to show)
+  // Show overlay (force it)
   overlay.style.display = "flex";
 }
 
@@ -172,7 +165,7 @@ function openExpandedCard(cardData, folderName) {
 ========================= */
 overlay.addEventListener("click", (e) => {
   if (e.target === overlay) {
-    overlay.style.display = "none";  // Hide the overlay when clicking outside
+    overlay.style.display = "none";  // Close the pop-up when clicking outside
   }
 });
 
