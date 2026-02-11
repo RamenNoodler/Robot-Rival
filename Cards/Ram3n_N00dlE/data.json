@@ -3,6 +3,7 @@
   "image": "unnamed.png",
   "description": "A major Gambler by far.",
   "hp": 150,
+  "team": "Team Obsidian",  /* New "team" field */
   "abilities": [
     {
       "name": "The Aventurine Stone",
