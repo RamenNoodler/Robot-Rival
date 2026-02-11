@@ -1,8 +1,58 @@
+const cardGrid = document.getElementById("card-grid");
+const overlay = document.getElementById("card-overlay");
+const expandedCard = document.getElementById("expanded-card");
+
+/* FORCE overlay hidden on load */
+overlay.style.display = "none";
+
+/* =========================
+   LOAD CARDS
+========================= */
+async function loadCards() {
+  cardGrid.innerHTML = "";
+
+  try {
+    const indexResponse = await fetch("Cards/cards-index.json");
+    const indexData = await indexResponse.json();
+
+    for (const folderName of indexData.cards) {
+      const cardResponse = await fetch(`Cards/${folderName}/data.json`);
+      const cardData = await cardResponse.json();
+
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const img = document.createElement("img");
+      img.src = `Cards/${folderName}/${cardData.image}`;
+      img.alt = cardData.name;
+
+      const name = document.createElement("h3");
+      name.textContent = cardData.name;
+
+      card.appendChild(img);
+      card.appendChild(name);
+
+      /* CLICK EVENT */
+      card.onclick = function () {
+        openPopup(cardData, folderName);
+      };
+
+      cardGrid.appendChild(card);
+    }
+
+  } catch (err) {
+    cardGrid.innerHTML = "<h2 style='color:red;'>Failed to load cards</h2>";
+  }
+}
+
+/* =========================
+   OPEN POPUP
+========================= */
 function openPopup(cardData, folderName) {
 
   expandedCard.innerHTML = "";
 
-  // 🔥 SHOW THE POPUP
+  /* SHOW OVERLAY */
   overlay.style.display = "flex";
 
   /* IMAGE */
@@ -25,11 +75,14 @@ function openPopup(cardData, folderName) {
   description.style.whiteSpace = "pre-line";
   description.textContent = cardData.description || "";
 
-  /* ABILITIES */
-  const abilitiesContainer = document.createElement("div");
+  expandedCard.appendChild(image);
+  expandedCard.appendChild(title);
+  expandedCard.appendChild(hp);
+  expandedCard.appendChild(description);
 
+  /* ABILITIES */
   if (cardData.abilities && Array.isArray(cardData.abilities)) {
-    cardData.abilities.forEach((ability, index) => {
+    cardData.abilities.forEach((ability) => {
 
       const abilityBlock = document.createElement("div");
       abilityBlock.style.marginTop = "15px";
@@ -40,13 +93,20 @@ function openPopup(cardData, folderName) {
         <p style="white-space: pre-line;">${ability.description}</p>
       `;
 
-      abilitiesContainer.appendChild(abilityBlock);
+      expandedCard.appendChild(abilityBlock);
     });
   }
-
-  expandedCard.appendChild(image);
-  expandedCard.appendChild(title);
-  expandedCard.appendChild(hp);
-  expandedCard.appendChild(description);
-  expandedCard.appendChild(abilitiesContainer);
 }
+
+/* =========================
+   CLOSE POPUP
+========================= */
+overlay.onclick = function (e) {
+  if (e.target === overlay) {
+    overlay.style.display = "none";
+    expandedCard.innerHTML = "";
+  }
+};
+
+/* START */
+loadCards();
