@@ -18,6 +18,7 @@
   display: flex; /* Show the overlay when visible class is added */
 }
 
+/* Pop-up card */
 .popup-card {
   background-color: #1a1a1a;
   padding: 20px;
@@ -31,8 +32,16 @@
 .popup-card img {
   max-width: 200px; /* Resize the image to fit */
   height: auto; /* Keep aspect ratio */
-  margin-right: 20px;
+  margin-bottom: 20px; /* Spacing below the image */
   border-radius: 8px;
+}
+
+/* Stats and abilities */
+.stat-rect {
+  background: #2a2a2a;
+  padding: 8px;
+  margin: 5px 0;
+  border-radius: 4px;
 }
 
 /* Back button */
@@ -50,9 +59,18 @@
   background-color: #555;
 }
 
-.stat-rect {
-  background: #2a2a2a;
-  padding: 8px;
+/* For better spacing and structure */
+.popup-card h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.popup-card h3 {
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+.popup-card p {
+  font-size: 16px;
   margin: 5px 0;
-  border-radius: 4px;
 }
