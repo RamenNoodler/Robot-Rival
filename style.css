@@ -1,86 +1,159 @@
-body {
+/* Reset */
+* {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0f0f0f;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background-color: #0f1117;
   color: white;
 }
 
-header {
-  text-align: center;
-  padding: 20px;
-}
+/* ===== GRID VIEW ===== */
 
 .card-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  padding: 20px;
+  padding: 40px;
 }
 
 .card {
-  background: #1a1a1a;
-  border-radius: 10px;
-  padding: 10px;
+  background: #1a1d26;
+  border-radius: 12px;
+  padding: 15px;
   text-align: center;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
   transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(0, 200, 255, 0.6);
 }
 
 .card img {
   width: 100%;
   border-radius: 8px;
+  margin-bottom: 10px;
 }
 
-/* OVERLAY */
+.card h3 {
+  font-size: 18px;
+}
+
+/* ===== POPUP OVERLAY ===== */
+
 .overlay {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: rgba(0, 0, 0, 0.75);
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
+  padding: 20px;
   z-index: 1000;
 }
 
-.hidden {
-  display: none;
+.overlay.visible {
+  display: flex;
 }
+
+/* ===== POPUP CARD ===== */
 
 .popup-card {
-  background: #1a1a1a;
-  width: 600px;
-  max-height: 90vh;
-  overflow-y: auto;
-  padding: 20px;
+  background: #1a1d26;
+  width: 800px;
+  max-width: 95%;
   border-radius: 12px;
-  animation: zoomIn 0.2s ease;
+  padding: 25px;
+  position: relative;
+  animation: fadeIn 0.2s ease-in-out;
 }
 
-@keyframes zoomIn {
-  from { transform: scale(0.9); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+.popup-card h2 {
+  margin-bottom: 15px;
+  text-align: center;
 }
 
+/* IMPORTANT: This allows multiline descriptions */
+.popup-card p {
+  white-space: pre-line;
+  margin-bottom: 10px;
+}
+
+/* Divider */
+.popup-card hr {
+  border: none;
+  height: 1px;
+  background: #333;
+  margin: 20px 0;
+}
+
+/* Image */
+.popup-card img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+/* Stats Section */
 .stats {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
-  margin: 15px 0;
+  margin-bottom: 20px;
 }
 
 .stat-rect {
-  background: #2a2a2a;
-  padding: 8px;
-  border-radius: 6px;
-}
-
-.ability {
-  background: #2a2a2a;
+  background: #11131a;
   padding: 10px;
   border-radius: 6px;
-  margin-top: 15px;
+  text-align: center;
+  font-size: 14px;
+  border: 1px solid #2a2e3a;
+}
+
+/* Ability Section */
+.ability {
+  background: #11131a;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.ability h3 {
+  margin-bottom: 8px;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ===== MOBILE ===== */
+
+@media (max-width: 900px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+  }
 }
