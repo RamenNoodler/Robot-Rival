@@ -1,6 +1,82 @@
-/* Ensure overlay is hidden by default */
+/* Basic reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Set background color */
+body {
+  background-color: #141414;
+  font-family: Arial, sans-serif;
+  color: #fff;
+}
+
+/* HEADER BAR */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #333;
+}
+
+#search-bar {
+  padding: 10px;
+  border-radius: 5px;
+  width: 60%;
+  border: none;
+}
+
+.categories {
+  display: flex;
+  gap: 10px;
+}
+
+.category-btn {
+  padding: 10px;
+  border: none;
+  background-color: #444;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.category-btn:hover {
+  background-color: #555;
+}
+
+/* CARD GRID */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  position: relative;
+  background-color: #222;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px 10px 0 0;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.8); /* Glowing effect */
+}
+
+/* POPUP */
 .overlay {
-  display: none; /* Overlay hidden at the start */
+  display: none; /* Overlay hidden by default */
   position: fixed;
   top: 0;
   left: 0;
@@ -15,7 +91,7 @@
 
 /* When the overlay should be visible */
 .overlay.visible {
-  display: flex; /* Show overlay when .visible class is added */
+  display: flex;
 }
 
 /* Pop-up card container */
@@ -48,4 +124,27 @@
 
 .back-button:hover {
   background-color: #555;
+}
+
+/* Stats and abilities */
+.stat-rect, .ability {
+  background: #2a2a2a;
+  padding: 8px;
+  margin: 5px 0;
+  border-radius: 6px;
+}
+
+/* Title and text styling */
+.popup-card h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.popup-card h3 {
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+.popup-card p {
+  font-size: 16px;
 }
