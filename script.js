@@ -3,52 +3,26 @@ const overlay = document.getElementById("card-overlay");
 const expandedCard = document.getElementById("expanded-card");
 
 /* =========================
-   LOAD ALL CARDS
+   LOAD CARDS
 ========================= */
-async function loadCards(category = '') {
-  cardGrid.innerHTML = "<h2>Loading cards...</h2>";
+async function loadCards() {
+  cardGrid.innerHTML = "";
 
   try {
     const indexResponse = await fetch("Cards/cards-index.json");
-
-    if (!indexResponse.ok) {
-      throw new Error("cards-index.json not found");
-    }
-
     const indexData = await indexResponse.json();
-    const cardNames = indexData.cards.filter(card => {
-      return category ? card.toLowerCase().includes(category.toLowerCase()) : true;
-    });
 
-    if (cardNames.length === 0) {
-      cardGrid.innerHTML = "<h2>No cards found</h2>";
-      return;
-    }
-
-    cardGrid.innerHTML = "";
-
-    for (let i = 0; i < cardNames.length; i++) {
-      const folderName = cardNames[i];
+    for (const folderName of indexData.cards) {
 
       const cardResponse = await fetch(`Cards/${folderName}/data.json`);
-
-      if (!cardResponse.ok) {
-        throw new Error(`Missing data.json in ${folderName}`);
-      }
-
       const cardData = await cardResponse.json();
 
-      const cardElement = createCard(cardData, folderName);
-      cardGrid.appendChild(cardElement);
+      const card = createCard(cardData, folderName);
+      cardGrid.appendChild(card);
     }
 
   } catch (err) {
-    cardGrid.innerHTML = `
-      <div style="color:red; padding:20px;">
-        <h2>Failed to load cards ❌</h2>
-        <p>${err.message}</p>
-      </div>
-    `;
+    cardGrid.innerHTML = "<h2 style='color:red;'>Failed to load cards</h2>";
   }
 }
 
@@ -70,9 +44,8 @@ function createCard(cardData, folderName) {
   card.appendChild(img);
   card.appendChild(name);
 
-  // Add event listener to the card to open the pop-up
-  card.addEventListener("click", function () {
-    openExpandedCard(cardData, folderName);
+  card.addEventListener("click", () => {
+    openPopup(cardData, folderName);
   });
 
   return card;
@@ -81,85 +54,30 @@ function createCard(cardData, folderName) {
 /* =========================
    OPEN POPUP
 ========================= */
-function openExpandedCard(cardData, folderName) {
-  expandedCard.innerHTML = "";  // Clear any existing content in the pop-up
+function openPopup(cardData, folderName) {
 
-  // Check if cardData is available, and only create content if it's valid
-  if (cardData && folderName) {
-    overlay.classList.add("visible");
+  expandedCard.innerHTML = "";
 
-    const image = document.createElement("img");
-    image.src = `Cards/${folderName}/${cardData.image}`;
-    image.style.width = "200px";  // Resize the image
-    image.style.borderRadius = "8px";
-    image.style.marginBottom = "15px";
-    
-    expandedCard.appendChild(image);
+  const image = document.createElement("img");
+  image.src = `Cards/${folderName}/${cardData.image}`;
+  image.style.width = "100%";
+  image.style.borderRadius = "10px";
+  image.style.marginBottom = "15px";
 
-    const title = document.createElement("h2");
-    title.textContent = cardData.name;
-    expandedCard.appendChild(title);
+  const title = document.createElement("h2");
+  title.textContent = cardData.name;
 
-    const divider = document.createElement("hr");
-    expandedCard.appendChild(divider);
+  const divider = document.createElement("hr");
 
-    // Stats
-    const statsContainer = document.createElement("div");
-    statsContainer.classList.add("stats");
+  const description = document.createElement("p");
+  description.textContent = cardData.description || "";
 
-    if (cardData.stats) {
-      for (const stat in cardData.stats) {
-        const statBox = document.createElement("div");
-        statBox.classList.add("stat-rect");
-        statBox.innerHTML = `<strong>${stat.toUpperCase()}</strong>: ${cardData.stats[stat]}`;
-        statsContainer.appendChild(statBox);
-      }
-    }
-    expandedCard.appendChild(statsContainer);
+  expandedCard.appendChild(image);
+  expandedCard.appendChild(title);
+  expandedCard.appendChild(divider);
+  expandedCard.appendChild(description);
 
-    // Abilities
-    const abilitySection = document.createElement("div");
-
-    if (cardData.abilities && Array.isArray(cardData.abilities)) {
-      cardData.abilities.forEach(ability => {
-        const abilityBox = document.createElement("div");
-        abilityBox.classList.add("ability");
-
-        abilityBox.innerHTML = `
-          <h3>${ability.name}</h3>
-          <p><strong>Energy Cost:</strong> ${ability.energy}</p>
-          <p>${ability.description}</p>
-        `;
-
-        abilitySection.appendChild(abilityBox);
-      });
-    }
-    expandedCard.appendChild(abilitySection);
-
-    // Description
-    const description = document.createElement("div");
-    description.classList.add("ability");
-    description.innerHTML = `
-      <h3>Description</h3>
-      <p>${cardData.description || ""}</p>
-    `;
-
-    expandedCard.appendChild(description);
-
-    // Add a "Back to Cards" button
-    const backButton = document.createElement("button");
-    backButton.textContent = "Back to Cards";
-    backButton.classList.add("back-button");
-
-    backButton.addEventListener("click", () => {
-      overlay.classList.remove("visible");  // Close the pop-up when clicked
-    });
-
-    expandedCard.appendChild(backButton);
-  } else {
-    // If there's no valid card data, hide the overlay immediately
-    overlay.classList.remove("visible");
-  }
+  overlay.classList.add("active");  // SHOW popup
 }
 
 /* =========================
@@ -167,18 +85,11 @@ function openExpandedCard(cardData, folderName) {
 ========================= */
 overlay.addEventListener("click", (e) => {
   if (e.target === overlay) {
-    overlay.classList.remove("visible");
+    overlay.classList.remove("active");
   }
 });
 
 /* =========================
-   CATEGORY BUTTONS
+   START
 ========================= */
-document.getElementById("teamobsidian").addEventListener("click", () => loadCards("teamobsidian"));
-document.getElementById("teamprotostar").addEventListener("click", () => loadCards("teamprotostar"));
-document.getElementById("teamneutral").addEventListener("click", () => loadCards("teamneutral"));
-
-/* =========================
-   START APP
-========================= */
-loadCards(); // Load all cards initially
+loadCards();
