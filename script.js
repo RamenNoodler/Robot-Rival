@@ -24,7 +24,6 @@ async function loadCards() {
       const card = document.createElement("div");
       card.className = "card";
 
-      /* Save searchable info */
       card.dataset.name = cardData.name.toLowerCase();
       card.dataset.description = (cardData.description || "").toLowerCase();
 
@@ -38,7 +37,6 @@ async function loadCards() {
       card.appendChild(img);
       card.appendChild(name);
 
-      /* CLICK EVENT */
       card.onclick = function () {
         openPopup(cardData, folderName);
 
@@ -53,7 +51,6 @@ async function loadCards() {
       cardGrid.appendChild(card);
     }
 
-    /* Auto open from URL */
     checkURLForCard(cardFolders);
 
   } catch (err) {
@@ -88,10 +85,13 @@ function openPopup(cardData, folderName) {
   expandedCard.appendChild(image);
   expandedCard.appendChild(title);
   expandedCard.appendChild(hp);
-  expandedCard.appendChild(description);
 
-  /* Abilities (NO ENERGY NOW) */
-  if (cardData.abilities && Array.isArray(cardData.abilities)) {
+  /* 🔥 Only show abilities if they actually exist AND have items */
+  if (cardData.abilities && Array.isArray(cardData.abilities) && cardData.abilities.length > 0) {
+
+    const abilityDivider = document.createElement("hr");
+    expandedCard.appendChild(abilityDivider);
+
     cardData.abilities.forEach((ability) => {
 
       const abilityBlock = document.createElement("div");
@@ -104,7 +104,13 @@ function openPopup(cardData, folderName) {
 
       expandedCard.appendChild(abilityBlock);
     });
+
+    const descDivider = document.createElement("hr");
+    expandedCard.appendChild(descDivider);
   }
+
+  /* Description always appears */
+  expandedCard.appendChild(description);
 }
 
 /* =========================
