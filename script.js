@@ -7,7 +7,7 @@ const expandedCard = document.getElementById("expanded-card");
 ========================= */
 async function loadCards() {
   cardGrid.innerHTML = "<h2>Loading cards...</h2>";
-
+   
   try {
     const indexResponse = await fetch("Cards/cards-index.json");
 
