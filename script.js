@@ -82,8 +82,11 @@ function createCard(cardData, folderName) {
    OPEN POPUP
 ========================= */
 function openExpandedCard(cardData, folderName) {
-  // Clear the expanded card content each time to prevent blank content
-  expandedCard.innerHTML = "";
+  // Show the overlay and pop-up content only after a card is clicked
+  overlay.classList.add("visible");
+
+  // Create the content of the pop-up dynamically
+  expandedCard.innerHTML = "";  // Clear any existing content in the pop-up
 
   // Add image
   const image = document.createElement("img");
@@ -145,15 +148,13 @@ function openExpandedCard(cardData, folderName) {
 
   expandedCard.appendChild(description);
 
-  // Show overlay (force it)
-  overlay.classList.add("visible");
-
+  // Add a "Back to Cards" button
   const backButton = document.createElement("button");
   backButton.textContent = "Back to Cards";
   backButton.classList.add("back-button");
 
   backButton.addEventListener("click", () => {
-    overlay.classList.remove("visible");
+    overlay.classList.remove("visible");  // Close the pop-up when clicked
   });
 
   expandedCard.appendChild(backButton);
@@ -164,7 +165,7 @@ function openExpandedCard(cardData, folderName) {
 ========================= */
 overlay.addEventListener("click", (e) => {
   if (e.target === overlay) {
-    overlay.classList.remove("visible");
+    overlay.classList.remove("visible");  // Close the pop-up when clicking outside
   }
 });
 
