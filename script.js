@@ -82,9 +82,10 @@ function createCard(cardData, folderName) {
    OPEN POPUP
 ========================= */
 function openExpandedCard(cardData, folderName) {
+  // Clear the expanded card content each time to prevent blank content
+  expandedCard.innerHTML = "";
 
-  expandedCard.innerHTML = "";  // Clear any previous content
-
+  // Add image
   const image = document.createElement("img");
   image.src = `Cards/${folderName}/${cardData.image}`;
   image.style.width = "200px";  // Resize the image
@@ -93,6 +94,7 @@ function openExpandedCard(cardData, folderName) {
   
   expandedCard.appendChild(image);
 
+  // Add title
   const title = document.createElement("h2");
   title.textContent = cardData.name;
   expandedCard.appendChild(title);
@@ -100,6 +102,7 @@ function openExpandedCard(cardData, folderName) {
   const divider = document.createElement("hr");
   expandedCard.appendChild(divider);
 
+  // Stats
   const statsContainer = document.createElement("div");
   statsContainer.classList.add("stats");
 
@@ -113,6 +116,7 @@ function openExpandedCard(cardData, folderName) {
   }
   expandedCard.appendChild(statsContainer);
 
+  // Abilities
   const abilitySection = document.createElement("div");
 
   if (cardData.abilities && Array.isArray(cardData.abilities)) {
@@ -131,6 +135,7 @@ function openExpandedCard(cardData, folderName) {
   }
   expandedCard.appendChild(abilitySection);
 
+  // Description
   const description = document.createElement("div");
   description.classList.add("ability");
   description.innerHTML = `
