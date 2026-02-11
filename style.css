@@ -23,12 +23,11 @@
   display: flex;
   gap: 20px;
   justify-content: space-between;
-  padding: 20px;
 }
 
 /* Left side - image */
 .image-container {
-  flex: 0 0 220px; /* Control the image size */
+  flex: 0 0 220px; /* Set image size */
   display: flex;
   justify-content: center;
 }
