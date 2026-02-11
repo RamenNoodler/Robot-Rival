@@ -2,6 +2,7 @@
 .popup-container {
   display: flex;
   gap: 20px;
+  justify-content: space-between;
 }
 
 /* Left side - image */
@@ -14,6 +15,7 @@
 /* Right side - content */
 .content-container {
   flex: 1;
+  padding: 20px;
 }
 
 /* Stats and abilities */
@@ -50,4 +52,10 @@
 .popup-card img {
   width: 200px; /* Adjust image size */
   margin-right: 20px;
+}
+
+/* For better spacing and structure */
+.popup-card h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
 }
