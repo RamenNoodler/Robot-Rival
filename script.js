@@ -83,7 +83,7 @@ function createCard(cardData, folderName) {
 ========================= */
 function openExpandedCard(cardData, folderName) {
 
-  expandedCard.innerHTML = "";
+  expandedCard.innerHTML = "";  // Clear any previous content
 
   const image = document.createElement("img");
   image.src = `Cards/${folderName}/${cardData.image}`;
@@ -159,7 +159,7 @@ function openExpandedCard(cardData, folderName) {
 ========================= */
 overlay.addEventListener("click", (e) => {
   if (e.target === overlay) {
-    overlay.classList.remove("visible");  // Close the pop-up when clicking outside
+    overlay.classList.remove("visible");
   }
 });
 
