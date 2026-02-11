@@ -102,35 +102,17 @@ function openExpandedCard(cardData, folderName) {
 
   expandedCard.innerHTML = "";
 
-  // Create a flex container for image and content
-  const container = document.createElement("div");
-  container.classList.add("popup-container");
+  const title = document.createElement("h2");
+  title.textContent = cardData.name;
 
-  const imageContainer = document.createElement("div");
-  imageContainer.classList.add("image-container");
-  
-  // Image section: resized to fit better
   const image = document.createElement("img");
   image.src = `Cards/${folderName}/${cardData.image}`;
   image.style.width = "200px";  // Resize the image
   image.style.borderRadius = "8px";
   image.style.marginBottom = "15px";
-  
-  imageContainer.appendChild(image);
 
-  const contentContainer = document.createElement("div");
-  contentContainer.classList.add("content-container");
-
-  // Title
-  const title = document.createElement("h2");
-  title.textContent = cardData.name;
-
-  contentContainer.appendChild(title);
-
-  // Divider between image and content
   const divider = document.createElement("hr");
 
-  // Stats
   const statsContainer = document.createElement("div");
   statsContainer.classList.add("stats");
 
@@ -143,7 +125,6 @@ function openExpandedCard(cardData, folderName) {
     }
   }
 
-  // Abilities
   const abilitySection = document.createElement("div");
 
   if (cardData.abilities && Array.isArray(cardData.abilities)) {
@@ -161,7 +142,6 @@ function openExpandedCard(cardData, folderName) {
     });
   }
 
-  // Description
   const description = document.createElement("div");
   description.classList.add("ability");
   description.innerHTML = `
@@ -169,27 +149,21 @@ function openExpandedCard(cardData, folderName) {
     <p>${cardData.description || ""}</p>
   `;
 
-  contentContainer.appendChild(statsContainer);
-  contentContainer.appendChild(abilitySection);
-  contentContainer.appendChild(description);
+  expandedCard.appendChild(title);
+  expandedCard.appendChild(image);
+  expandedCard.appendChild(divider);
+  expandedCard.appendChild(statsContainer);
+  expandedCard.appendChild(abilitySection);
+  expandedCard.appendChild(description);
 
-  // Append image and content containers to the main container
-  container.appendChild(imageContainer);
-  container.appendChild(contentContainer);
-
-  // Append the final layout to the expandedCard div
-  expandedCard.appendChild(container);
-
-  // Show overlay (force it)
   overlay.classList.add("visible");
 
-  // Add a "Back" button
   const backButton = document.createElement("button");
   backButton.textContent = "Back to Cards";
   backButton.classList.add("back-button");
 
   backButton.addEventListener("click", () => {
-    overlay.classList.remove("visible");  // Close the pop-up when clicked
+    overlay.classList.remove("visible");
   });
 
   expandedCard.appendChild(backButton);
@@ -200,7 +174,7 @@ function openExpandedCard(cardData, folderName) {
 ========================= */
 overlay.addEventListener("click", (e) => {
   if (e.target === overlay) {
-    overlay.classList.remove("visible");  // Close the pop-up when clicking outside
+    overlay.classList.remove("visible");
   }
 });
 
