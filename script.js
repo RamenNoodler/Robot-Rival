@@ -72,19 +72,6 @@ function openPopup(cardData, folderName) {
   const title = document.createElement("h2");
   title.textContent = cardData.name;
 
-  /* --- STATS --- */
-  const statsContainer = document.createElement("div");
-  statsContainer.classList.add("stats");
-
-  if (cardData.stats) {
-    for (const stat in cardData.stats) {
-      const statBox = document.createElement("div");
-      statBox.classList.add("stat-rect");
-      statBox.innerHTML = `<strong>${stat.toUpperCase()}</strong>: ${cardData.stats[stat]}`;
-      statsContainer.appendChild(statBox);
-    }
-  }
-
   /* --- DESCRIPTION --- */
   const descriptionSection = document.createElement("div");
   descriptionSection.classList.add("ability-block");
@@ -117,7 +104,6 @@ function openPopup(cardData, folderName) {
   /* --- BUILD POPUP --- */
   expandedCard.appendChild(image);
   expandedCard.appendChild(title);
-  expandedCard.appendChild(statsContainer);
   expandedCard.appendChild(descriptionSection);
   expandedCard.appendChild(abilitiesContainer);
 
