@@ -3,7 +3,6 @@ const overlay = document.getElementById("card-overlay");
 const expandedCard = document.getElementById("expanded-card");
 const searchBar = document.getElementById("search-bar");
 
-/* FORCE overlay hidden on load */
 overlay.style.display = "none";
 
 /* =========================
@@ -40,10 +39,20 @@ async function loadCards() {
 
       card.onclick = function () {
         openPopup(cardData, folderName);
+
+        // 🔥 Update URL without reloading
+        history.pushState(
+          { card: folderName },
+          "",
+          `?card=${folderName}`
+        );
       };
 
       cardGrid.appendChild(card);
     }
+
+    // 🔥 Auto-open if URL has ?card=
+    checkURLForCard(cardFolders);
 
   } catch (err) {
     cardGrid.innerHTML = "<h2 style='color:red;'>Failed to load cards</h2>";
@@ -58,22 +67,18 @@ function openPopup(cardData, folderName) {
   expandedCard.innerHTML = "";
   overlay.style.display = "flex";
 
-  /* IMAGE */
   const image = document.createElement("img");
   image.src = `Cards/${folderName}/${cardData.image}`;
   image.style.width = "100%";
   image.style.borderRadius = "10px";
   image.style.marginBottom = "15px";
 
-  /* TITLE */
   const title = document.createElement("h2");
   title.textContent = cardData.name;
 
-  /* HP */
   const hp = document.createElement("p");
   hp.innerHTML = `<strong>HP:</strong> ${cardData.hp || "—"}`;
 
-  /* DESCRIPTION */
   const description = document.createElement("p");
   description.style.whiteSpace = "pre-line";
   description.textContent = cardData.description || "";
@@ -83,7 +88,6 @@ function openPopup(cardData, folderName) {
   expandedCard.appendChild(hp);
   expandedCard.appendChild(description);
 
-  /* ABILITIES */
   if (cardData.abilities && Array.isArray(cardData.abilities)) {
     cardData.abilities.forEach((ability) => {
 
@@ -108,6 +112,9 @@ overlay.onclick = function (e) {
   if (e.target === overlay) {
     overlay.style.display = "none";
     expandedCard.innerHTML = "";
+
+    // Remove ?card= from URL
+    history.pushState({}, "", window.location.pathname);
   }
 };
 
@@ -133,5 +140,27 @@ searchBar.addEventListener("input", function () {
   });
 });
 
-/* START APP */
+/* =========================
+   CHECK URL ON LOAD
+========================= */
+async function checkURLForCard(cardFolders) {
+
+  const params = new URLSearchParams(window.location.search);
+  const cardParam = params.get("card");
+
+  if (!cardParam) return;
+  if (!cardFolders.includes(cardParam)) return;
+
+  try {
+    const cardResponse = await fetch(`Cards/${cardParam}/data.json`);
+    const cardData = await cardResponse.json();
+
+    openPopup(cardData, cardParam);
+
+  } catch (err) {
+    console.error("Failed to load card from URL");
+  }
+}
+
+/* START */
 loadCards();
