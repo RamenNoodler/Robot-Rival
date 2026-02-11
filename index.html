@@ -1,35 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>Robot Rivals Database</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <!-- HEADER BAR -->
-  <header>
-    <input type="text" id="search-bar" placeholder="Search Cards..." />
-    <div class="categories">
-      <button class="category-btn" id="teamobsidian">Team Obsidian</button>
-      <button class="category-btn" id="teamprotostar">Team Protostar</button>
-      <button class="category-btn" id="teamneutral">Team Neutral</button>
-    </div>
+  <header class="top-bar">
+    <h1>Robot Rivals Database</h1>
+    <input 
+      type="text" 
+      id="search-bar" 
+      placeholder="Search cards..."
+    >
   </header>
 
-  <!-- CARD GRID -->
   <main id="card-grid" class="card-grid"></main>
 
-  <!-- POPUP OVERLAY -->
-<div id="card-overlay" class="overlay" style="display: none;">
-  <div id="expanded-card" class="popup-card"></div>
-</div>
-
+  <!-- POPUP -->
+  <div id="card-overlay" class="overlay">
+    <div id="expanded-card" class="popup-card"></div>
+  </div>
 
   <script src="script.js"></script>
 </body>
-
 </html>
