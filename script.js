@@ -5,7 +5,7 @@ const expandedCard = document.getElementById("expanded-card");
 /* =========================
    LOAD ALL CARDS
 ========================= */
-async function loadCards() {
+async function loadCards(category = '') {
   cardGrid.innerHTML = "<h2>Loading cards...</h2>";
 
   try {
@@ -16,18 +16,16 @@ async function loadCards() {
     }
 
     const indexData = await indexResponse.json();
-    const cardNames = indexData.cards;
+    const cardNames = indexData.cards.filter(card => {
+      return category ? card.toLowerCase().includes(category.toLowerCase()) : true;
+    });
 
-    if (!cardNames || cardNames.length === 0) {
-      cardGrid.innerHTML = "<h2>No cards listed in cards-index.json</h2>";
+    if (cardNames.length === 0) {
+      cardGrid.innerHTML = "<h2>No cards found</h2>";
       return;
     }
 
     cardGrid.innerHTML = "";
-
-    let rowIndex = 0;
-    let colIndex = 0;
-    const columns = 4;
 
     for (let i = 0; i < cardNames.length; i++) {
       const folderName = cardNames[i];
@@ -41,21 +39,7 @@ async function loadCards() {
       const cardData = await cardResponse.json();
 
       const cardElement = createCard(cardData, folderName);
-
-      /* Snake pattern layout */
-      if (rowIndex % 2 === 1) {
-        cardElement.style.gridColumn = columns - colIndex;
-      } else {
-        cardElement.style.gridColumn = colIndex + 1;
-      }
-
       cardGrid.appendChild(cardElement);
-
-      colIndex++;
-      if (colIndex >= columns) {
-        colIndex = 0;
-        rowIndex++;
-      }
     }
 
   } catch (err) {
@@ -63,7 +47,6 @@ async function loadCards() {
       <div style="color:red; padding:20px;">
         <h2>Failed to load cards ❌</h2>
         <p>${err.message}</p>
-        <p>Check folder names and capitalization.</p>
       </div>
     `;
   }
@@ -102,25 +85,21 @@ function openExpandedCard(cardData, folderName) {
 
   expandedCard.innerHTML = "";
 
-  // Create the image container (image on top)
   const image = document.createElement("img");
   image.src = `Cards/${folderName}/${cardData.image}`;
   image.style.width = "200px";  // Resize the image
   image.style.borderRadius = "8px";
   image.style.marginBottom = "15px";
-
+  
   expandedCard.appendChild(image);
 
-  // Title of the card
   const title = document.createElement("h2");
   title.textContent = cardData.name;
   expandedCard.appendChild(title);
 
-  // Divider
   const divider = document.createElement("hr");
   expandedCard.appendChild(divider);
 
-  // Stats
   const statsContainer = document.createElement("div");
   statsContainer.classList.add("stats");
 
@@ -134,7 +113,6 @@ function openExpandedCard(cardData, folderName) {
   }
   expandedCard.appendChild(statsContainer);
 
-  // Abilities
   const abilitySection = document.createElement("div");
 
   if (cardData.abilities && Array.isArray(cardData.abilities)) {
@@ -153,7 +131,6 @@ function openExpandedCard(cardData, folderName) {
   }
   expandedCard.appendChild(abilitySection);
 
-  // Description
   const description = document.createElement("div");
   description.classList.add("ability");
   description.innerHTML = `
@@ -166,7 +143,6 @@ function openExpandedCard(cardData, folderName) {
   // Show overlay (force it)
   overlay.classList.add("visible");
 
-  // Add a "Back" button to close the pop-up
   const backButton = document.createElement("button");
   backButton.textContent = "Back to Cards";
   backButton.classList.add("back-button");
@@ -183,11 +159,18 @@ function openExpandedCard(cardData, folderName) {
 ========================= */
 overlay.addEventListener("click", (e) => {
   if (e.target === overlay) {
-    overlay.classList.remove("visible");  // Close the pop-up when clicking outside
+    overlay.classList.remove("visible");
   }
 });
 
 /* =========================
+   CATEGORY BUTTONS
+========================= */
+document.getElementById("teamobsidian").addEventListener("click", () => loadCards("teamobsidian"));
+document.getElementById("teamprotostar").addEventListener("click", () => loadCards("teamprotostar"));
+document.getElementById("teamneutral").addEventListener("click", () => loadCards("teamneutral"));
+
+/* =========================
    START APP
 ========================= */
-loadCards();
+loadCards(); // Load all cards initially
