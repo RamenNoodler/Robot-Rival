@@ -90,7 +90,7 @@ header {
 
 /* POPUP OVERLAY */
 .overlay {
-  display: none;  /* Overlay hidden by default */
+  display: none; /* Overlay hidden by default */
   position: fixed;
   top: 0;
   left: 0;
@@ -107,6 +107,7 @@ header {
 .overlay.active {
   display: flex;
 }
+
 
 
 /* Pop-up card container */
