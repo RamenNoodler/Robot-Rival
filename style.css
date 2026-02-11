@@ -7,7 +7,7 @@
 
 /* Set background color */
 body {
-  background-color: #141414; /* Dark background */
+  background-color: #141414;  /* Dark background */
   font-family: 'Arial', sans-serif;
   color: #fff;
   padding: 0 20px;
@@ -71,6 +71,10 @@ header {
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .card img {
@@ -86,7 +90,7 @@ header {
 
 /* POPUP OVERLAY */
 .overlay {
-  display: none; /* Overlay hidden by default */
+  display: none;  /* Overlay hidden by default */
   position: fixed;
   top: 0;
   left: 0;
@@ -158,4 +162,22 @@ header {
 
 .popup-card p {
   white-space: pre-line;  /* allows \n line breaks */
+}
+
+/* Make sure cards are responsive on smaller screens */
+@media (max-width: 768px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile view */
+@media (max-width: 480px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #search-bar {
+    width: 100%;
+  }
 }
