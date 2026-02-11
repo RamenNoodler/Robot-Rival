@@ -3,6 +3,7 @@ const overlay = document.getElementById("card-overlay");
 const expandedCard = document.getElementById("expanded-card");
 const searchBar = document.getElementById("search-bar");
 
+/* Hide popup on load */
 overlay.style.display = "none";
 
 /* =========================
@@ -23,7 +24,7 @@ async function loadCards() {
       const card = document.createElement("div");
       card.className = "card";
 
-      // Save searchable data
+      /* Save searchable info */
       card.dataset.name = cardData.name.toLowerCase();
       card.dataset.description = (cardData.description || "").toLowerCase();
 
@@ -37,21 +38,22 @@ async function loadCards() {
       card.appendChild(img);
       card.appendChild(name);
 
+      /* CLICK EVENT */
       card.onclick = function () {
         openPopup(cardData, folderName);
 
-        // 🔥 Update URL without reloading
-        history.pushState(
-          { card: folderName },
-          "",
-          `?card=${folderName}`
-        );
+        const newURL =
+          window.location.origin +
+          window.location.pathname +
+          "?card=" + folderName;
+
+        window.history.pushState({ path: newURL }, "", newURL);
       };
 
       cardGrid.appendChild(card);
     }
 
-    // 🔥 Auto-open if URL has ?card=
+    /* Auto open from URL */
     checkURLForCard(cardFolders);
 
   } catch (err) {
@@ -70,7 +72,7 @@ function openPopup(cardData, folderName) {
   const image = document.createElement("img");
   image.src = `Cards/${folderName}/${cardData.image}`;
   image.style.width = "100%";
-  image.style.borderRadius = "10px";
+  image.style.borderRadius = "12px";
   image.style.marginBottom = "15px";
 
   const title = document.createElement("h2");
@@ -88,6 +90,7 @@ function openPopup(cardData, folderName) {
   expandedCard.appendChild(hp);
   expandedCard.appendChild(description);
 
+  /* Abilities */
   if (cardData.abilities && Array.isArray(cardData.abilities)) {
     cardData.abilities.forEach((ability) => {
 
@@ -113,13 +116,17 @@ overlay.onclick = function (e) {
     overlay.style.display = "none";
     expandedCard.innerHTML = "";
 
-    // Remove ?card= from URL
-    history.pushState({}, "", window.location.pathname);
+    /* Remove ?card= from URL */
+    window.history.pushState(
+      {},
+      "",
+      window.location.origin + window.location.pathname
+    );
   }
 };
 
 /* =========================
-   SEARCH FUNCTION
+   SEARCH
 ========================= */
 searchBar.addEventListener("input", function () {
 
@@ -128,39 +135,4 @@ searchBar.addEventListener("input", function () {
 
   cards.forEach(card => {
 
-    const nameMatch = card.dataset.name.includes(searchValue);
-    const descMatch = card.dataset.description.includes(searchValue);
-
-    if (nameMatch || descMatch) {
-      card.style.display = "block";
-    } else {
-      card.style.display = "none";
-    }
-
-  });
-});
-
-/* =========================
-   CHECK URL ON LOAD
-========================= */
-async function checkURLForCard(cardFolders) {
-
-  const params = new URLSearchParams(window.location.search);
-  const cardParam = params.get("card");
-
-  if (!cardParam) return;
-  if (!cardFolders.includes(cardParam)) return;
-
-  try {
-    const cardResponse = await fetch(`Cards/${cardParam}/data.json`);
-    const cardData = await cardResponse.json();
-
-    openPopup(cardData, cardParam);
-
-  } catch (err) {
-    console.error("Failed to load card from URL");
-  }
-}
-
-/* START */
-loadCards();
+    const nameMatch = card.dataset
