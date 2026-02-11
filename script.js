@@ -13,15 +13,20 @@ async function loadCards() {
   cardGrid.innerHTML = "";
 
   try {
-    const indexResponse = await fetch("Cards/cards-index.json");
-    const indexData = await indexResponse.json();
+    const response = await fetch("Cards/cards-index.json");
+    const cardFolders = await response.json();
 
-    for (const folderName of indexData.cards) {
+    for (const folderName of cardFolders) {
+
       const cardResponse = await fetch(`Cards/${folderName}/data.json`);
       const cardData = await cardResponse.json();
 
       const card = document.createElement("div");
       card.className = "card";
+
+      // Save searchable data
+      card.dataset.name = cardData.name.toLowerCase();
+      card.dataset.description = (cardData.description || "").toLowerCase();
 
       const img = document.createElement("img");
       img.src = `Cards/${folderName}/${cardData.image}`;
@@ -33,7 +38,6 @@ async function loadCards() {
       card.appendChild(img);
       card.appendChild(name);
 
-      /* CLICK EVENT */
       card.onclick = function () {
         openPopup(cardData, folderName);
       };
@@ -52,8 +56,6 @@ async function loadCards() {
 function openPopup(cardData, folderName) {
 
   expandedCard.innerHTML = "";
-
-  /* SHOW OVERLAY */
   overlay.style.display = "flex";
 
   /* IMAGE */
@@ -109,20 +111,27 @@ overlay.onclick = function (e) {
   }
 };
 
+/* =========================
+   SEARCH FUNCTION
+========================= */
 searchBar.addEventListener("input", function () {
+
   const searchValue = searchBar.value.toLowerCase();
   const cards = document.querySelectorAll(".card");
 
   cards.forEach(card => {
-    const cardName = card.querySelector("h3").textContent.toLowerCase();
 
-    if (cardName.includes(searchValue)) {
+    const nameMatch = card.dataset.name.includes(searchValue);
+    const descMatch = card.dataset.description.includes(searchValue);
+
+    if (nameMatch || descMatch) {
       card.style.display = "block";
     } else {
       card.style.display = "none";
     }
+
   });
 });
 
-/* START */
+/* START APP */
 loadCards();
