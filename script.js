@@ -7,11 +7,10 @@ const expandedCard = document.getElementById("expanded-card");
 ========================= */
 async function loadCards() {
 
-  // Visible debug message
   cardGrid.innerHTML = "<h2>Loading cards...</h2>";
 
   try {
-    const indexResponse = await fetch(`Cards/cards-index.json?v=${Date.now()}`);
+ const indexResponse = await fetch(`Cards/cards-index.json?v=${Date.now()}`);
 
     if (!indexResponse.ok) {
       throw new Error("cards-index.json not found");
@@ -26,7 +25,6 @@ async function loadCards() {
       return;
     }
 
-    // Clear loading text
     cardGrid.innerHTML = "";
 
     let rowIndex = 0;
@@ -34,7 +32,6 @@ async function loadCards() {
     const columns = 4;
 
     for (let i = 0; i < cardNames.length; i++) {
-
       const folderName = cardNames[i];
 
       const cardResponse = await fetch(`Cards/${folderName}/data.json`);
@@ -130,7 +127,7 @@ function openExpandedCard(cardData, folderName) {
     }
   }
 
-  /* Abilities */
+  /* Abilities (now dynamic for any number of abilities) */
   const abilitySection = document.createElement("div");
 
   if (cardData.abilities && Array.isArray(cardData.abilities)) {
