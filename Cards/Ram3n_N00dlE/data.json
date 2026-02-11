@@ -1,18 +1,18 @@
 {
   "name": "Ram3n_N00dlE",
   "image": "unnamed.png",
-  "stats": {
-    "spd": 80,
-    "atk": 120,
-    "def": 95,
-    "hp": 150
-  },
   "description": "A major Gambler by far.",
+  "hp": 150,
   "abilities": [
     {
       "name": "The Aventurine Stone",
       "energy": 3,
-      "description": "Roll a 6 sided die, \n1. Lose 60 HP \n2. Deal 90 Damage \n3. This robot does nothing \n4. Deal 40 Damage \n5. Lose 10 HP \n6. Deal 130 Damage "
+      "description": "Roll a 6 sided die:\n1. Lose 60 HP\n2. Deal 90 Damage\n3. Do nothing\n4. Deal 40 Damage\n5. Lose 10 HP\n6. Deal 130 Damage"
+    },
+    {
+      "name": "Backup Plan",
+      "energy": 2,
+      "description": "Gain 20 shield.\nIf HP below 50%, gain 40 instead."
     }
   ]
 }
