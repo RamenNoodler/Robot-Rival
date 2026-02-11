@@ -2,7 +2,7 @@ const cardGrid = document.getElementById("card-grid");
 const overlay = document.getElementById("card-overlay");
 const expandedCard = document.getElementById("expanded-card");
 
-/* Hide overlay immediately on load */
+/* Make sure overlay is hidden on load */
 overlay.classList.remove("active");
 
 /* =========================
@@ -30,7 +30,7 @@ async function loadCards() {
 }
 
 /* =========================
-   CREATE CARD
+   CREATE CARD TILE
 ========================= */
 function createCard(cardData, folderName) {
 
@@ -61,21 +61,65 @@ function openPopup(cardData, folderName) {
 
   expandedCard.innerHTML = "";
 
+  /* --- IMAGE --- */
   const image = document.createElement("img");
   image.src = `Cards/${folderName}/${cardData.image}`;
   image.style.width = "100%";
   image.style.borderRadius = "10px";
   image.style.marginBottom = "15px";
 
+  /* --- TITLE --- */
   const title = document.createElement("h2");
   title.textContent = cardData.name;
 
-  const description = document.createElement("p");
-  description.textContent = cardData.description || "";
+  /* --- STATS --- */
+  const statsContainer = document.createElement("div");
+  statsContainer.classList.add("stats");
 
+  if (cardData.stats) {
+    for (const stat in cardData.stats) {
+      const statBox = document.createElement("div");
+      statBox.classList.add("stat-rect");
+      statBox.innerHTML = `<strong>${stat.toUpperCase()}</strong>: ${cardData.stats[stat]}`;
+      statsContainer.appendChild(statBox);
+    }
+  }
+
+  /* --- DESCRIPTION --- */
+  const descriptionSection = document.createElement("div");
+  descriptionSection.classList.add("ability-block");
+
+  descriptionSection.innerHTML = `
+    <h3>Description</h3>
+    <p>${cardData.description || ""}</p>
+  `;
+
+  /* --- ABILITIES (DYNAMIC 1–4+) --- */
+  const abilitiesContainer = document.createElement("div");
+
+  if (cardData.abilities && Array.isArray(cardData.abilities)) {
+
+    cardData.abilities.forEach((ability, index) => {
+
+      const abilityBlock = document.createElement("div");
+      abilityBlock.classList.add("ability-block");
+
+      abilityBlock.innerHTML = `
+        <h3>Ability ${index + 1}: ${ability.name}</h3>
+        <p><strong>Energy Cost:</strong> ${ability.energy}</p>
+        <p>${ability.description}</p>
+      `;
+
+      abilitiesContainer.appendChild(abilityBlock);
+    });
+  }
+
+  /* --- BUILD POPUP --- */
   expandedCard.appendChild(image);
   expandedCard.appendChild(title);
-  expandedCard.appendChild(description);
+  expandedCard.appendChild(statsContainer);
+  expandedCard.appendChild(descriptionSection);
+  expandedCard.appendChild(abilitiesContainer);
 
   overlay.classList.add("active");
 }
