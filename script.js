@@ -159,7 +159,7 @@ function openExpandedCard(cardData, folderName) {
 ========================= */
 overlay.addEventListener("click", (e) => {
   if (e.target === overlay) {
-    overlay.classList.remove("visible");
+    overlay.classList.remove("visible");  // Close the pop-up when clicking outside
   }
 });
 
