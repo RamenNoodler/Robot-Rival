@@ -102,17 +102,25 @@ function openExpandedCard(cardData, folderName) {
 
   expandedCard.innerHTML = "";
 
-  const title = document.createElement("h2");
-  title.textContent = cardData.name;
-
+  // Create the image container (image on top)
   const image = document.createElement("img");
   image.src = `Cards/${folderName}/${cardData.image}`;
   image.style.width = "200px";  // Resize the image
   image.style.borderRadius = "8px";
   image.style.marginBottom = "15px";
 
-  const divider = document.createElement("hr");
+  expandedCard.appendChild(image);
 
+  // Title of the card
+  const title = document.createElement("h2");
+  title.textContent = cardData.name;
+  expandedCard.appendChild(title);
+
+  // Divider
+  const divider = document.createElement("hr");
+  expandedCard.appendChild(divider);
+
+  // Stats
   const statsContainer = document.createElement("div");
   statsContainer.classList.add("stats");
 
@@ -124,7 +132,9 @@ function openExpandedCard(cardData, folderName) {
       statsContainer.appendChild(statBox);
     }
   }
+  expandedCard.appendChild(statsContainer);
 
+  // Abilities
   const abilitySection = document.createElement("div");
 
   if (cardData.abilities && Array.isArray(cardData.abilities)) {
@@ -141,7 +151,9 @@ function openExpandedCard(cardData, folderName) {
       abilitySection.appendChild(abilityBox);
     });
   }
+  expandedCard.appendChild(abilitySection);
 
+  // Description
   const description = document.createElement("div");
   description.classList.add("ability");
   description.innerHTML = `
@@ -149,15 +161,12 @@ function openExpandedCard(cardData, folderName) {
     <p>${cardData.description || ""}</p>
   `;
 
-  expandedCard.appendChild(title);
-  expandedCard.appendChild(image);
-  expandedCard.appendChild(divider);
-  expandedCard.appendChild(statsContainer);
-  expandedCard.appendChild(abilitySection);
   expandedCard.appendChild(description);
 
+  // Show overlay (force it)
   overlay.classList.add("visible");
 
+  // Add a "Back" button to close the pop-up
   const backButton = document.createElement("button");
   backButton.textContent = "Back to Cards";
   backButton.classList.add("back-button");
@@ -174,7 +183,7 @@ function openExpandedCard(cardData, folderName) {
 ========================= */
 overlay.addEventListener("click", (e) => {
   if (e.target === overlay) {
-    overlay.classList.remove("visible");
+    overlay.classList.remove("visible");  // Close the pop-up when clicking outside
   }
 });
 
