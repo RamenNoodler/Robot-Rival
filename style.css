@@ -86,6 +86,12 @@ body {
   white-space: pre-line;
   margin-bottom: 10px;
 }
+/* Make sure line breaks work inside ability descriptions */
+.ability p {
+  white-space: pre-line;
+  margin-bottom: 10px;
+}
+
 
 /* Divider */
 .popup-card hr {
