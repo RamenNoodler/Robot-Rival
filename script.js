@@ -1,6 +1,7 @@
 const cardGrid = document.getElementById("card-grid");
 const overlay = document.getElementById("card-overlay");
 const expandedCard = document.getElementById("expanded-card");
+const searchBar = document.getElementById("search-bar");
 
 /* FORCE overlay hidden on load */
 overlay.style.display = "none";
@@ -107,6 +108,21 @@ overlay.onclick = function (e) {
     expandedCard.innerHTML = "";
   }
 };
+
+searchBar.addEventListener("input", function () {
+  const searchValue = searchBar.value.toLowerCase();
+  const cards = document.querySelectorAll(".card");
+
+  cards.forEach(card => {
+    const cardName = card.querySelector("h3").textContent.toLowerCase();
+
+    if (cardName.includes(searchValue)) {
+      card.style.display = "block";
+    } else {
+      card.style.display = "none";
+    }
+  });
+});
 
 /* START */
 loadCards();
