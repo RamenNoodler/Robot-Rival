@@ -1,51 +1,107 @@
-/* Ensure overlay is hidden by default */
+/* Basic reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* HEADER BAR */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #333;
+}
+
+#search-bar {
+  padding: 10px;
+  border-radius: 5px;
+  width: 60%;
+  border: none;
+}
+
+.categories {
+  display: flex;
+  gap: 10px;
+}
+
+.category-btn {
+  padding: 10px;
+  border: none;
+  background-color: #444;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.category-btn:hover {
+  background-color: #555;
+}
+
+/* CARD GRID */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  position: relative;
+  background-color: #222;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px 10px 0 0;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.8); /* Glowing effect */
+}
+
+/* POPUP */
 .overlay {
-  display: none; /* Hide the overlay initially */
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.75); /* Dark background */
+  background: rgba(0, 0, 0, 0.75);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
 }
 
-/* When the overlay should be visible */
 .overlay.visible {
-  display: flex; /* Show the overlay when visible class is added */
+  display: flex;
 }
 
-/* Pop-up card */
 .popup-card {
-  background-color: #1a1a1a;
+  background-color: #222;
   padding: 20px;
-  color: #fff;
+  color: white;
   border-radius: 10px;
   max-width: 600px;
-  margin: 20px;
+  width: 100%;
+  text-align: center;
 }
 
-/* Ensure image scales properly without stretching */
 .popup-card img {
-  max-width: 200px; /* Resize the image to fit */
-  height: auto; /* Keep aspect ratio */
-  margin-bottom: 20px; /* Spacing below the image */
+  max-width: 100%;
+  height: auto;
   border-radius: 8px;
 }
 
-/* Stats and abilities */
-.stat-rect {
-  background: #2a2a2a;
-  padding: 8px;
-  margin: 5px 0;
-  border-radius: 4px;
-}
-
-/* Back button */
-.back-button {
+.popup-card .back-button {
   background-color: #333;
   color: white;
   padding: 10px 20px;
@@ -55,22 +111,6 @@
   margin-top: 20px;
 }
 
-.back-button:hover {
+.popup-card .back-button:hover {
   background-color: #555;
-}
-
-/* For better spacing and structure */
-.popup-card h2 {
-  font-size: 24px;
-  margin-bottom: 15px;
-}
-
-.popup-card h3 {
-  font-size: 20px;
-  margin-top: 10px;
-}
-
-.popup-card p {
-  font-size: 16px;
-  margin: 5px 0;
 }
