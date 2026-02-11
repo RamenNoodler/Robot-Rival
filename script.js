@@ -6,20 +6,43 @@ const expandedCard = document.getElementById("expanded-card");
    LOAD ALL CARDS
 ========================= */
 async function loadCards() {
+
+  // Visible debug message
+  cardGrid.innerHTML = "<h2>Loading cards...</h2>";
+
   try {
     const indexResponse = await fetch("Cards/cards-index.json");
+
+    if (!indexResponse.ok) {
+      throw new Error("cards-index.json not found");
+    }
+
     const indexData = await indexResponse.json();
 
     const cardNames = indexData.cards;
+
+    if (!cardNames || cardNames.length === 0) {
+      cardGrid.innerHTML = "<h2>No cards listed in cards-index.json</h2>";
+      return;
+    }
+
+    // Clear loading text
+    cardGrid.innerHTML = "";
 
     let rowIndex = 0;
     let colIndex = 0;
     const columns = 4;
 
     for (let i = 0; i < cardNames.length; i++) {
+
       const folderName = cardNames[i];
 
       const cardResponse = await fetch(`Cards/${folderName}/data.json`);
+
+      if (!cardResponse.ok) {
+        throw new Error(`Missing data.json in ${folderName}`);
+      }
+
       const cardData = await cardResponse.json();
 
       const cardElement = createCard(cardData, folderName);
@@ -41,7 +64,13 @@ async function loadCards() {
     }
 
   } catch (err) {
-    console.error("Failed to load cards:", err);
+    cardGrid.innerHTML = `
+      <div style="color:red; padding:20px;">
+        <h2>Failed to load cards ❌</h2>
+        <p>${err.message}</p>
+        <p>Check folder names and capitalization.</p>
+      </div>
+    `;
   }
 }
 
@@ -49,6 +78,7 @@ async function loadCards() {
    CREATE CARD TILE
 ========================= */
 function createCard(cardData, folderName) {
+
   const card = document.createElement("div");
   card.classList.add("card");
 
@@ -76,36 +106,36 @@ function openExpandedCard(cardData, folderName) {
 
   expandedCard.innerHTML = "";
 
-  /* Title */
   const title = document.createElement("h2");
   title.textContent = cardData.name;
 
-  /* Image */
   const image = document.createElement("img");
   image.src = `Cards/${folderName}/${cardData.image}`;
   image.style.width = "100%";
   image.style.borderRadius = "8px";
   image.style.marginBottom = "15px";
 
-  /* Divider */
   const divider = document.createElement("hr");
 
-  /* Stats Section */
+  /* Stats */
   const statsContainer = document.createElement("div");
   statsContainer.classList.add("stats");
 
-  for (const stat in cardData.stats) {
-    const statBox = document.createElement("div");
-    statBox.classList.add("stat-rect");
-    statBox.innerHTML = `<strong>${stat.toUpperCase()}</strong>: ${cardData.stats[stat]}`;
-    statsContainer.appendChild(statBox);
+  if (cardData.stats) {
+    for (const stat in cardData.stats) {
+      const statBox = document.createElement("div");
+      statBox.classList.add("stat-rect");
+      statBox.innerHTML = `<strong>${stat.toUpperCase()}</strong>: ${cardData.stats[stat]}`;
+      statsContainer.appendChild(statBox);
+    }
   }
 
-  /* Abilities Section */
+  /* Abilities */
   const abilitySection = document.createElement("div");
 
   if (cardData.abilities && Array.isArray(cardData.abilities)) {
     cardData.abilities.forEach(ability => {
+
       const abilityBox = document.createElement("div");
       abilityBox.classList.add("ability");
 
@@ -119,7 +149,7 @@ function openExpandedCard(cardData, folderName) {
     });
   }
 
-  /* Description Section */
+  /* Description */
   const description = document.createElement("div");
   description.classList.add("ability");
   description.innerHTML = `
@@ -127,7 +157,6 @@ function openExpandedCard(cardData, folderName) {
     <p>${cardData.description || ""}</p>
   `;
 
-  /* Append Everything */
   expandedCard.appendChild(title);
   expandedCard.appendChild(image);
   expandedCard.appendChild(divider);
