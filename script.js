@@ -2,6 +2,9 @@ const cardGrid = document.getElementById("card-grid");
 const overlay = document.getElementById("card-overlay");
 const expandedCard = document.getElementById("expanded-card");
 
+/* Hide overlay immediately on load */
+overlay.classList.remove("active");
+
 /* =========================
    LOAD CARDS
 ========================= */
@@ -27,7 +30,7 @@ async function loadCards() {
 }
 
 /* =========================
-   CREATE CARD TILE
+   CREATE CARD
 ========================= */
 function createCard(cardData, folderName) {
 
@@ -67,17 +70,14 @@ function openPopup(cardData, folderName) {
   const title = document.createElement("h2");
   title.textContent = cardData.name;
 
-  const divider = document.createElement("hr");
-
   const description = document.createElement("p");
   description.textContent = cardData.description || "";
 
   expandedCard.appendChild(image);
   expandedCard.appendChild(title);
-  expandedCard.appendChild(divider);
   expandedCard.appendChild(description);
 
-  overlay.classList.add("active");  // SHOW popup
+  overlay.classList.add("active");
 }
 
 /* =========================
@@ -89,7 +89,5 @@ overlay.addEventListener("click", (e) => {
   }
 });
 
-/* =========================
-   START
-========================= */
+/* START */
 loadCards();
