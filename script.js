@@ -59,7 +59,7 @@ function createCard(cardData, folderName) {
 ========================= */
 function openPopup(cardData, folderName) {
 
-  expandedCard.innerHTML = "";
+  expandedCard.innerHTML = "";  // Clear the pop-up content first
 
   /* --- IMAGE --- */
   const image = document.createElement("img");
@@ -79,6 +79,15 @@ function openPopup(cardData, folderName) {
   descriptionSection.innerHTML = `
     <h3>Description</h3>
     <p>${cardData.description || ""}</p>
+  `;
+
+  /* --- HP STAT --- */
+  const hpSection = document.createElement("div");
+  hpSection.classList.add("ability-block");
+
+  hpSection.innerHTML = `
+    <h3>HP</h3>
+    <p>${cardData.hp || "No HP specified"}</p>
   `;
 
   /* --- ABILITIES (DYNAMIC 1–4+) --- */
@@ -105,6 +114,7 @@ function openPopup(cardData, folderName) {
   expandedCard.appendChild(image);
   expandedCard.appendChild(title);
   expandedCard.appendChild(descriptionSection);
+  expandedCard.appendChild(hpSection);  // Add HP Section
   expandedCard.appendChild(abilitiesContainer);
 
   overlay.classList.add("active");
