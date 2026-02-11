@@ -2,8 +2,12 @@ const cardGrid = document.getElementById("card-grid");
 const overlay = document.getElementById("card-overlay");
 const expandedCard = document.getElementById("expanded-card");
 
-/* Make sure overlay is hidden on load */
-overlay.classList.remove("active");
+/* =========================
+   ENSURE OVERLAY IS HIDDEN INITIALLY
+========================= */
+document.addEventListener("DOMContentLoaded", () => {
+  overlay.style.display = "none";  // Force the overlay to be hidden at load
+});
 
 /* =========================
    LOAD CARDS
@@ -59,9 +63,9 @@ function createCard(cardData, folderName) {
 ========================= */
 function openPopup(cardData, folderName) {
 
-  // Clear and hide the overlay first
-  overlay.classList.add("active");
-  expandedCard.innerHTML = "";  // Remove any existing content in the pop-up
+  // Ensure the overlay is hidden at the start, then make it visible
+  overlay.style.display = "flex";  // Show the overlay when opening the pop-up
+  expandedCard.innerHTML = "";  // Clear any previous content in the pop-up
 
   /* --- IMAGE --- */
   const image = document.createElement("img");
@@ -125,8 +129,8 @@ function openPopup(cardData, folderName) {
 ========================= */
 overlay.addEventListener("click", (e) => {
   if (e.target === overlay) {
-    overlay.classList.remove("active");  // Remove the "active" class to hide the overlay
-    expandedCard.innerHTML = "";  // Clear the content when closing the popup
+    overlay.style.display = "none";  // Hide overlay when clicking outside
+    expandedCard.innerHTML = "";  // Clear content in the popup when closed
   }
 });
 
