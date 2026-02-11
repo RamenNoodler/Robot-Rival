@@ -10,7 +10,11 @@
 <body>
 
   <header class="top-bar">
-    <h1>Robot Rivals Database</h1>
+    <div class="title-area">
+      <h1>Robot Rivals Database</h1>
+      <button id="credits-btn" class="credits-button">Credits</button>
+    </div>
+
     <input 
       type="text" 
       id="search-bar" 
@@ -20,9 +24,21 @@
 
   <main id="card-grid" class="card-grid"></main>
 
-  <!-- POPUP -->
+  <!-- CARD POPUP -->
   <div id="card-overlay" class="overlay">
     <div id="expanded-card" class="popup-card"></div>
+  </div>
+
+  <!-- CREDITS POPUP -->
+  <div id="credits-overlay" class="overlay">
+    <div class="popup-card" id="credits-popup">
+      <h2>Credits</h2>
+      <p>Created by: Ramon David </p>
+      <p>Game Design: Robot Rivals</p>
+      <p>Website Development: Ramon David</p>
+      <p>All characters & assets belong to the Robot Rival's artist, and will strike you if you use any art, without a licence approved by the Robot Rival's team.</p>
+      <p>Asking for a Robot Rival's License means talking to the owner of this website, Ramon, and his assosiates hosting the website.</p>
+    </div>
   </div>
 
   <script src="script.js"></script>
