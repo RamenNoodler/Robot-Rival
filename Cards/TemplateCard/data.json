@@ -2,7 +2,7 @@
   "name": "Name - Card Name ",
   "image": "unnamed.png",
   "description": "'Quote from person' - Name ",
-  "hp": 80,
+  "hp": 0,
   "team": "Team Neutral",
   "abilities": [
     {
