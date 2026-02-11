@@ -12,11 +12,7 @@
     {
       "name": "The Aventurine Stone",
       "energy": 3,
-      "description": "Roll a 6 sided die, \n1. Lose 60 HP \n2. Deal 90 Damage
- 3. This robot does nothing
- 4. Deal 40 Damage
- 5. Lose 10 HP
- 6. Deal 130 Damage "
+      "description": "Roll a 6 sided die, \n1. Lose 60 HP \n2. Deal 90 Damage \n3. This robot does nothing \n4. Deal 40 Damage \n5. Lose 10 HP \n6. Deal 130 Damage "
     }
   ]
 }
