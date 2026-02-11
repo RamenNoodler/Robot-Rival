@@ -1,6 +1,5 @@
-const cardGrid = document.getElementById("card-grid");
-const overlay = document.getElementById("card-overlay");
-const expandedCard = document.getElementById("expanded-card");
+const cardGrid = document.getElementById("cardGrid");
+const cardDetail = document.getElementById("cardDetail");
 
 /* Load all cards */
 async function loadCards() {
@@ -42,7 +41,7 @@ async function loadCards() {
   }
 }
 
-/* Create a card tile */
+/* Create card tile */
 function createCard(cardData, folderName) {
   const card = document.createElement("div");
   card.classList.add("card");
@@ -57,62 +56,51 @@ function createCard(cardData, folderName) {
   card.appendChild(img);
   card.appendChild(name);
 
-  card.addEventListener("click", () => openExpandedCard(cardData, folderName));
+  card.addEventListener("click", () => openCardDetail(cardData, folderName));
 
   return card;
 }
 
-/* Open zoomed card */
-function openExpandedCard(cardData, folderName) {
-  expandedCard.innerHTML = "";
+/* Open full-page detail */
+function openCardDetail(cardData, folderName) {
+  cardGrid.style.display = "none";
+  cardDetail.classList.remove("hidden");
 
-  const title = document.createElement("h2");
-  title.textContent = cardData.name;
+  document.getElementById("detailImage").src =
+    `Cards/${folderName}/${cardData.image}`;
 
-  const divider = document.createElement("hr");
+  document.getElementById("detailSPD").textContent =
+    cardData.stats.spd || "-";
+  document.getElementById("detailATK").textContent =
+    cardData.stats.atk || "-";
+  document.getElementById("detailDEF").textContent =
+    cardData.stats.def || "-";
+  document.getElementById("detailHP").textContent =
+    cardData.stats.hp || "-";
 
-  const image = document.createElement("img");
-  image.src = `Cards/${folderName}/${cardData.image}`;
-  image.style.width = "100%";
-  image.style.borderRadius = "8px";
-  image.style.marginBottom = "15px";
+  document.getElementById("ability1Name").textContent =
+    cardData.abilities?.[0]?.name || "";
+  document.getElementById("ability1Energy").textContent =
+    cardData.abilities?.[0]?.energy || "";
+  document.getElementById("ability1Desc").textContent =
+    cardData.abilities?.[0]?.description || "";
 
-  const statsContainer = document.createElement("div");
-  statsContainer.classList.add("stats");
+  document.getElementById("ability2Name").textContent =
+    cardData.abilities?.[1]?.name || "";
+  document.getElementById("ability2Energy").textContent =
+    cardData.abilities?.[1]?.energy || "";
+  document.getElementById("ability2Desc").textContent =
+    cardData.abilities?.[1]?.description || "";
 
-  for (const stat in cardData.stats) {
-    const statBox = document.createElement("div");
-    statBox.classList.add("stat-rect");
-    statBox.innerHTML = `<span>${stat.toUpperCase()}</span>: ${cardData.stats[stat]}`;
-    statsContainer.appendChild(statBox);
-  }
-
-  const abilitySection = document.createElement("div");
-  abilitySection.classList.add("ability");
-
-  abilitySection.innerHTML = `
-    <h3>${cardData.ability.name}</h3>
-    <p><strong>Energy Cost:</strong> ${cardData.ability.energy}</p>
-    <p>${cardData.ability.description}</p>
-  `;
-
-  expandedCard.appendChild(title);
-  expandedCard.appendChild(image);
-  expandedCard.appendChild(divider);
-  expandedCard.appendChild(statsContainer);
-  expandedCard.appendChild(abilitySection);
-
-  overlay.classList.remove("hidden");
-  overlay.classList.add("visible");
+  document.getElementById("detailDescription").textContent =
+    cardData.description || "";
 }
 
-/* Close zoom when clicking outside */
-overlay.addEventListener("click", (e) => {
-  if (e.target === overlay) {
-    overlay.classList.remove("visible");
-    overlay.classList.add("hidden");
-  }
-});
+/* Back to grid */
+function closeDetail() {
+  cardDetail.classList.add("hidden");
+  cardGrid.style.display = "grid";
+}
 
 /* Start app */
 loadCards();
