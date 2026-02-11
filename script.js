@@ -59,9 +59,9 @@ function createCard(cardData, folderName) {
 ========================= */
 function openPopup(cardData, folderName) {
 
-  // First, hide the overlay and clear the content before opening new one
+  // Clear and hide the overlay first
   overlay.classList.add("active");
-  expandedCard.innerHTML = "";  // Clear any previous content
+  expandedCard.innerHTML = "";  // Remove any existing content in the pop-up
 
   /* --- IMAGE --- */
   const image = document.createElement("img");
@@ -125,7 +125,8 @@ function openPopup(cardData, folderName) {
 ========================= */
 overlay.addEventListener("click", (e) => {
   if (e.target === overlay) {
-    overlay.classList.remove("active");
+    overlay.classList.remove("active");  // Remove the "active" class to hide the overlay
+    expandedCard.innerHTML = "";  // Clear the content when closing the popup
   }
 });
 
