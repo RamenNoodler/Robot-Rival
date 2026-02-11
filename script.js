@@ -90,7 +90,7 @@ function openPopup(cardData, folderName) {
   expandedCard.appendChild(hp);
   expandedCard.appendChild(description);
 
-  /* Abilities */
+  /* Abilities (NO ENERGY NOW) */
   if (cardData.abilities && Array.isArray(cardData.abilities)) {
     cardData.abilities.forEach((ability) => {
 
@@ -99,7 +99,6 @@ function openPopup(cardData, folderName) {
 
       abilityBlock.innerHTML = `
         <h3>${ability.name}</h3>
-        <p><strong>Energy:</strong> ${ability.energy}</p>
         <p style="white-space: pre-line;">${ability.description}</p>
       `;
 
@@ -116,7 +115,6 @@ overlay.onclick = function (e) {
     overlay.style.display = "none";
     expandedCard.innerHTML = "";
 
-    /* Remove ?card= from URL */
     window.history.pushState(
       {},
       "",
@@ -135,4 +133,39 @@ searchBar.addEventListener("input", function () {
 
   cards.forEach(card => {
 
-    const nameMatch = card.dataset
+    const nameMatch = card.dataset.name.includes(searchValue);
+    const descMatch = card.dataset.description.includes(searchValue);
+
+    if (nameMatch || descMatch) {
+      card.style.display = "block";
+    } else {
+      card.style.display = "none";
+    }
+
+  });
+});
+
+/* =========================
+   CHECK URL ON LOAD
+========================= */
+async function checkURLForCard(cardFolders) {
+
+  const params = new URLSearchParams(window.location.search);
+  const cardParam = params.get("card");
+
+  if (!cardParam) return;
+  if (!cardFolders.includes(cardParam)) return;
+
+  try {
+    const cardResponse = await fetch(`Cards/${cardParam}/data.json`);
+    const cardData = await cardResponse.json();
+
+    openPopup(cardData, cardParam);
+
+  } catch (err) {
+    console.error("Failed to load card from URL");
+  }
+}
+
+/* START */
+loadCards();
