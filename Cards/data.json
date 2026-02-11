@@ -1,0 +1,22 @@
+{
+  "name": "Ram3n_N00dlE",
+  "image": "unnamed.png",
+  "stats": {
+    "spd": 80,
+    "atk": 120,
+    "def": 95,
+    "hp": 150
+  },
+  "description": "A major Gambler by far.",
+  "abilities": [
+    {
+      "name": "The Aventurine Stone",
+      "energy": 3,
+      "description": "Roll a 6 sided die, \n1. Lose 60 HP \n2. Deal 90 Damage
+ 3. This robot does nothing
+ 4. Deal 40 Damage
+ 5. Lose 10 HP
+ 6. Deal 130 Damage "
+    }
+  ]
+}
