@@ -3,13 +3,6 @@ const overlay = document.getElementById("card-overlay");
 const expandedCard = document.getElementById("expanded-card");
 
 /* =========================
-   ENSURE OVERLAY IS HIDDEN INITIALLY
-========================= */
-document.addEventListener("DOMContentLoaded", () => {
-  overlay.style.display = "none";  // Force the overlay to be hidden at load
-});
-
-/* =========================
    LOAD CARDS
 ========================= */
 async function loadCards() {
@@ -63,9 +56,9 @@ function createCard(cardData, folderName) {
 ========================= */
 function openPopup(cardData, folderName) {
 
-  // Ensure the overlay is hidden at the start, then make it visible
-  overlay.style.display = "flex";  // Show the overlay when opening the pop-up
-  expandedCard.innerHTML = "";  // Clear any previous content in the pop-up
+  // Clear the content and hide the overlay initially before adding content
+  expandedCard.innerHTML = ""; // Clear previous content
+  overlay.style.display = "flex";  // Make sure the overlay is shown only when needed
 
   /* --- IMAGE --- */
   const image = document.createElement("img");
@@ -130,8 +123,15 @@ function openPopup(cardData, folderName) {
 overlay.addEventListener("click", (e) => {
   if (e.target === overlay) {
     overlay.style.display = "none";  // Hide overlay when clicking outside
-    expandedCard.innerHTML = "";  // Clear content in the popup when closed
+    expandedCard.innerHTML = "";  // Clear the content in the pop-up when closed
   }
+});
+
+/* =========================
+   HIDE OVERLAY BY DEFAULT ON PAGE LOAD
+========================= */
+document.addEventListener("DOMContentLoaded", () => {
+  overlay.style.display = "none"; // Overlay is hidden on page load
 });
 
 /* START */
