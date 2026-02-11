@@ -7,17 +7,17 @@
     "def": 95,
     "hp": 150
   },
-  "description": "A frontline assault robot.",
+  "description": "A frontline assault robot built for heavy combat.",
   "abilities": [
     {
       "name": "Overclock Strike",
       "energy": 3,
-      "description": "Boost ATK by 30%."
+      "description": "Boost ATK by 30% for 1 turn."
     },
     {
       "name": "Plasma Barrage",
       "energy": 5,
-      "description": "Massive energy damage."
+      "description": "Deals massive energy damage."
     }
   ]
 }
