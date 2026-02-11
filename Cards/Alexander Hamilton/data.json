@@ -1,16 +1,23 @@
 {
-  "name": "Alexander Hamilton",
-  "type": "Tryannosaurus Rex.",
+  "name": "Steel Vanguard",
+  "image": "steel.png",
   "stats": {
-    "atk": 80,
-    "speed": 60,
-    "def": 45,
-    "hp": 120
+    "spd": 80,
+    "atk": 120,
+    "def": 95,
+    "hp": 150
   },
-  "ability": {
-    "name": "Overdrive Core",
-    "energy": 3,
-    "description": "This robot gains +20 ATK and attacks twice this turn."
-  },
-  "image": "image.png"
+  "description": "A frontline assault robot.",
+  "abilities": [
+    {
+      "name": "Overclock Strike",
+      "energy": 3,
+      "description": "Boost ATK by 30%."
+    },
+    {
+      "name": "Plasma Barrage",
+      "energy": 5,
+      "description": "Massive energy damage."
+    }
+  ]
 }
