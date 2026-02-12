@@ -172,19 +172,6 @@ async function checkURLForCard(cardFolders) {
     console.error("Failed to load card from URL");
   }
 }
-/* =========================
-   CREDITS POPUP
-========================= */
-creditsBtn.onclick = function () {
-  creditsOverlay.style.display = "flex";
-};
-
-creditsOverlay.onclick = function (e) {
-  if (e.target === creditsOverlay) {
-    creditsOverlay.style.display = "none";
-  }
-};
-
 
 /* START */
 loadCards();
