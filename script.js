@@ -18,7 +18,7 @@ async function loadCards() {
 
     for (const folderName of cardFolders) {
 
-      const cardResponse = await fetch(`Cards/${folderName}/data.json`);
+      const cardResponse = await fetch(`Cards/${folderName}/data.json?v=${Date.now()}`);
       const cardData = await cardResponse.json();
 
       const card = document.createElement("div");
