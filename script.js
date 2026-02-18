@@ -10,53 +10,52 @@ overlay.style.display = "none";
    LOAD CARDS
 ========================= */
 async function loadCards() {
+  console.log("Loading cards...");
+
   cardGrid.innerHTML = "";
 
   try {
-    const response = await fetch("Cards/cards-index.json");
+    const response = await fetch("Cards/cards-index.json?v=" + Date.now());
+    
+    if (!response.ok) {
+      throw new Error("cards-index.json not found");
+    }
+
     const cardFolders = await response.json();
+
+    console.log("Folders found:", cardFolders);
 
     for (const folderName of cardFolders) {
 
-      const cardResponse = await fetch(`Cards/${folderName}/data.json?v=${Date.now()}`);
+      const cardResponse = await fetch(
+        `Cards/${folderName}/data.json?v=${Date.now()}`
+      );
+
+      if (!cardResponse.ok) {
+        console.warn(`Missing data.json for ${folderName}`);
+        continue;
+      }
+
       const cardData = await cardResponse.json();
 
       const card = document.createElement("div");
       card.className = "card";
 
-      card.dataset.name = cardData.name.toLowerCase();
-      card.dataset.description = (cardData.description || "").toLowerCase();
-
-      const img = document.createElement("img");
-      img.src = `Cards/${folderName}/${cardData.image}`;
-      img.alt = cardData.name;
-
-      const name = document.createElement("h3");
-      name.textContent = cardData.name;
-
-      card.appendChild(img);
-      card.appendChild(name);
-
-      card.onclick = function () {
-        openPopup(cardData, folderName);
-
-        const newURL =
-          window.location.origin +
-          window.location.pathname +
-          "?card=" + folderName;
-
-        window.history.pushState({ path: newURL }, "", newURL);
-      };
+      card.innerHTML = `
+        <img src="Cards/${folderName}/${cardData.image}" />
+        <h3>${cardData.name}</h3>
+      `;
 
       cardGrid.appendChild(card);
     }
 
-    checkURLForCard(cardFolders);
+    console.log("Cards loaded successfully");
 
   } catch (err) {
-    cardGrid.innerHTML = "<h2 style='color:red;'>Failed to load cards</h2>";
+    console.error("ERROR LOADING CARDS:", err);
   }
 }
+
 
 /* =========================
    OPEN POPUP
