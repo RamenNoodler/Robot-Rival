@@ -60,73 +60,81 @@ async function loadCards() {
 /* =========================
    OPEN POPUP
 ========================= */
+const overlay = document.getElementById("card-overlay");
+const expandedCard = document.getElementById("expanded-card");
+
+/* =========================
+   OPEN POPUP
+========================= */
 function openPopup(cardData, folderName) {
 
   expandedCard.innerHTML = "";
-  overlay.style.display = "flex";
+
+  overlay.classList.add("active");
 
   const image = document.createElement("img");
-  image.src = `Cards/${folderName}/${cardData.image}`;
-  image.style.width = "100%";
-  image.style.borderRadius = "12px";
-  image.style.marginBottom = "15px";
+  image.src = `./Cards/${folderName}/${cardData.image}`;
 
   const title = document.createElement("h2");
   title.textContent = cardData.name;
 
-  const hp = document.createElement("p");
-  hp.innerHTML = `<strong>HP:</strong> ${cardData.hp || "—"}`;
-
-  const description = document.createElement("p");
-  description.style.whiteSpace = "pre-line";
-  description.textContent = cardData.description || "";
-
   expandedCard.appendChild(image);
   expandedCard.appendChild(title);
-  expandedCard.appendChild(hp);
 
-  /* 🔥 Only show abilities if they actually exist AND have items */
-  if (cardData.abilities && Array.isArray(cardData.abilities) && cardData.abilities.length > 0) {
+  /* Abilities (ONLY if they exist) */
+  if (cardData.abilities && cardData.abilities.length > 0) {
 
-    const abilityDivider = document.createElement("hr");
-    expandedCard.appendChild(abilityDivider);
+    expandedCard.appendChild(document.createElement("hr"));
 
-    cardData.abilities.forEach((ability) => {
-
+    cardData.abilities.forEach(ability => {
       const abilityBlock = document.createElement("div");
-      abilityBlock.style.marginTop = "15px";
 
       abilityBlock.innerHTML = `
         <h3>${ability.name}</h3>
-        <p style="white-space: pre-line;">${ability.description}</p>
+        <p style="white-space: pre-line;">
+          ${ability.description}
+        </p>
       `;
 
       expandedCard.appendChild(abilityBlock);
     });
 
-    const descDivider = document.createElement("hr");
-    expandedCard.appendChild(descDivider);
+    expandedCard.appendChild(document.createElement("hr"));
   }
 
-  /* Description always appears */
-  expandedCard.appendChild(description);
+  /* Description */
+  if (cardData.description) {
+    const description = document.createElement("p");
+    description.style.whiteSpace = "pre-line";
+    description.textContent = cardData.description;
+
+    expandedCard.appendChild(description);
+  }
 }
 
 /* =========================
-   CLOSE POPUP
+   CLOSE POPUP (click outside)
 ========================= */
-overlay.onclick = function (e) {
+overlay.addEventListener("click", function (e) {
   if (e.target === overlay) {
-    overlay.style.display = "none";
-    expandedCard.innerHTML = "";
-
-    window.history.pushState(
-      {},
-      "",
-      window.location.origin + window.location.pathname
-    );
+    closePopup();
   }
-};
+});
+
+/* =========================
+   CLOSE POPUP (ESC key)
+========================= */
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape") {
+    closePopup();
+  }
+});
+
+function closePopup() {
+  overlay.classList.remove("active");
+  expandedCard.innerHTML = "";
+  window.history.pushState({}, "", window.location.pathname);
+}
 
 /* =========================
    SEARCH
