@@ -68,33 +68,52 @@ const expandedCard = document.getElementById("expanded-card");
 ========================= */
 function openPopup(cardData, folderName) {
 
+  const overlay = document.getElementById("card-overlay");
+  const expandedCard = document.getElementById("expanded-card");
+
+  // Hard reset
   expandedCard.innerHTML = "";
+  overlay.style.display = "flex";
 
-  overlay.classList.add("active");
-
+  // IMAGE
   const image = document.createElement("img");
   image.src = `./Cards/${folderName}/${cardData.image}`;
+  image.alt = cardData.name;
+  expandedCard.appendChild(image);
 
+  // TITLE
   const title = document.createElement("h2");
   title.textContent = cardData.name;
-
-  expandedCard.appendChild(image);
   expandedCard.appendChild(title);
 
-  /* Abilities (ONLY if they exist) */
-  if (cardData.abilities && cardData.abilities.length > 0) {
+  // TEAM
+  const team = document.createElement("p");
+  team.innerHTML = `<strong>Team:</strong> ${cardData.team}`;
+  expandedCard.appendChild(team);
+
+  // HP
+  const hp = document.createElement("p");
+  hp.innerHTML = `<strong>HP:</strong> ${cardData.hp}`;
+  expandedCard.appendChild(hp);
+
+  // ABILITIES
+  if (Array.isArray(cardData.abilities) && cardData.abilities.length > 0) {
 
     expandedCard.appendChild(document.createElement("hr"));
 
     cardData.abilities.forEach(ability => {
+
       const abilityBlock = document.createElement("div");
 
-      abilityBlock.innerHTML = `
-        <h3>${ability.name}</h3>
-        <p style="white-space: pre-line;">
-          ${ability.description}
-        </p>
-      `;
+      const abilityName = document.createElement("h3");
+      abilityName.textContent = ability.name;
+
+      const abilityDesc = document.createElement("p");
+      abilityDesc.style.whiteSpace = "pre-line";
+      abilityDesc.textContent = ability.description;
+
+      abilityBlock.appendChild(abilityName);
+      abilityBlock.appendChild(abilityDesc);
 
       expandedCard.appendChild(abilityBlock);
     });
@@ -102,14 +121,11 @@ function openPopup(cardData, folderName) {
     expandedCard.appendChild(document.createElement("hr"));
   }
 
-  /* Description */
-  if (cardData.description) {
-    const description = document.createElement("p");
-    description.style.whiteSpace = "pre-line";
-    description.textContent = cardData.description;
-
-    expandedCard.appendChild(description);
-  }
+  // DESCRIPTION
+  const description = document.createElement("p");
+  description.style.whiteSpace = "pre-line";
+  description.textContent = cardData.description;
+  expandedCard.appendChild(description);
 }
 
 /* =========================
