@@ -18,8 +18,9 @@ body {
   font-family: 'Arial', sans-serif;
   color: #fff;
   padding: 0 20px;
+  margin: 0;
+  overflow-y: auto;
 }
-
 /* HEADER BAR */
 header {
   display: flex;
