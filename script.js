@@ -23,46 +23,34 @@ window.addEventListener("DOMContentLoaded", () => {
 ========================= */
 
 async function loadCards() {
-
-  cardGrid.innerHTML = "";
-
   try {
-    const response = await fetch("./Cards/cards-index.json?v=" + Date.now());
-    const cardFolders = await response.json();
+    const indexRes = await fetch("cards/cards-index.json");
+    const cardIndex = await indexRes.json();
 
-    for (const folderName of cardFolders) {
+    // Build array of promises (parallel loading)
+    const cardPromises = cardIndex.map(card =>
+      fetch(card.path)
+        .then(res => {
+          if (!res.ok) throw new Error(`Failed to load ${card.path}`);
+          return res.json();
+        })
+        .then(data => ({
+          ...data,
+          id: card.id,
+          team: card.team
+        }))
+    );
 
-      const cardResponse = await fetch(`./Cards/${folderName}/data.json?v=${Date.now()}`);
-      const cardData = await cardResponse.json();
+    // Wait for ALL cards at once
+    const cards = await Promise.all(cardPromises);
 
-      const card = document.createElement("div");
-      card.className = "card";
+    return cards;
 
-      card.dataset.name = (cardData.name || "").toLowerCase();
-      card.dataset.description = (cardData.description || "").toLowerCase();
-
-      const img = document.createElement("img");
-      img.src = `./Cards/${folderName}/${cardData.image}`;
-      img.alt = cardData.name;
-
-      const name = document.createElement("h3");
-      name.textContent = cardData.name;
-
-      card.appendChild(img);
-      card.appendChild(name);
-
-      card.onclick = function () {
-        openPopup(cardData, folderName);
-      };
-
-      cardGrid.appendChild(card);
-    }
-
-  } catch (err) {
-    console.error("Card loading error:", err);
+  } catch (error) {
+    console.error("Error loading cards:", error);
+    return [];
   }
 }
-
 
 /* =========================
    OPEN POPUP
@@ -70,7 +58,7 @@ async function loadCards() {
 
 function openPopup(cardData, folderName) {
 
-  expandedCard.innerHTML = "";
+  expandedCard.innerHTML = "Hey, your not supposed to see this >:(";
   overlay.style.display = "flex";
 
   // IMAGE
