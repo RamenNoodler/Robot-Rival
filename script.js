@@ -134,6 +134,42 @@ function openPopup(cardData, folderName) {
     description.textContent = cardData.description;
     expandedCard.appendChild(description);
   }
+  /* =========================
+     TALK BUTTON
+  ========================= */
+
+  if (Array.isArray(cardData.responses) && cardData.responses.length > 0) {
+
+    const talkButton = document.createElement("button");
+    talkButton.textContent = cardData.talkButton || "Talk";
+    talkButton.style.marginTop = "15px";
+
+    const speechBubble = document.createElement("div");
+    speechBubble.style.marginTop = "10px";
+    speechBubble.style.padding = "8px 12px";
+    speechBubble.style.borderRadius = "10px";
+    speechBubble.style.background = "white";
+    speechBubble.style.color = "black";
+    speechBubble.style.display = "none";
+    speechBubble.style.maxWidth = "80%";
+
+    talkButton.onclick = function () {
+      const random =
+        cardData.responses[
+          Math.floor(Math.random() * cardData.responses.length)
+        ];
+
+      speechBubble.textContent = random;
+      speechBubble.style.display = "block";
+
+      setTimeout(() => {
+        speechBubble.style.display = "none";
+      }, 3000);
+    };
+
+    expandedCard.appendChild(talkButton);
+    expandedCard.appendChild(speechBubble);
+  }
 }
 
 
