@@ -65,11 +65,11 @@ async function loadCards() {
 
 
 /* =========================
-   SAFE OPEN POPUP
+   OPEN POPUP
 ========================= */
+
 function openPopup(cardData, folderName) {
 
-  // clear previous content
   expandedCard.innerHTML = "";
   overlay.style.display = "flex";
 
@@ -77,7 +77,7 @@ function openPopup(cardData, folderName) {
   if (cardData.image) {
     const image = document.createElement("img");
     image.src = `./Cards/${folderName}/${cardData.image}`;
-    image.alt = cardData.name || "Card Image";
+    image.alt = cardData.name;
     expandedCard.appendChild(image);
   }
 
@@ -104,18 +104,26 @@ function openPopup(cardData, folderName) {
 
   // ABILITIES
   if (Array.isArray(cardData.abilities) && cardData.abilities.length > 0) {
+
     expandedCard.appendChild(document.createElement("hr"));
+
     cardData.abilities.forEach(ability => {
+
       const abilityBlock = document.createElement("div");
+
       const abilityName = document.createElement("h3");
       abilityName.textContent = ability.name || "";
+
       const abilityDesc = document.createElement("p");
       abilityDesc.style.whiteSpace = "pre-line";
       abilityDesc.textContent = ability.description || "";
+
       abilityBlock.appendChild(abilityName);
       abilityBlock.appendChild(abilityDesc);
+
       expandedCard.appendChild(abilityBlock);
     });
+
     expandedCard.appendChild(document.createElement("hr"));
   }
 
@@ -125,69 +133,6 @@ function openPopup(cardData, folderName) {
     description.style.whiteSpace = "pre-line";
     description.textContent = cardData.description;
     expandedCard.appendChild(description);
-  }
-
-  // TALK BUTTON & SPEECH BUBBLE
-  if (Array.isArray(cardData.responses) && cardData.responses.length > 0) {
-    const randomIndex = Math.floor(Math.random() * cardData.responses.length);
-    const randomResponse = cardData.responses[randomIndex];
-
-    const speechBubble = document.createElement("p");
-    speechBubble.className = "speech-bubble";
-    speechBubble.textContent = randomResponse;
-    expandedCard.appendChild(speechBubble);
-
-    const talkButton = document.createElement("button");
-    const buttonText = cardData.talkButton && cardData.talkButton.trim() !== "" 
-                       ? cardData.talkButton 
-                       : "Talk";
-    talkButton.textContent = buttonText;
-
-    expandedCard.appendChild(talkButton);
-  }
-
-  // FORCE HIDE INSTANTLY ON LOAD
-  overlay.style.display = "none"; 
-  expandedCard.innerHTML = "";
-}
-  /* =========================
-     TALK BUTTON
-  ========================= */
-if (
-  Array.isArray(cardData.responses) &&
-  cardData.responses.length > 0 &&
-  !(Array.isArray(cardData.talkButton) && cardData.talkButton.length === 0)
-) {
-
-    const talkButton = document.createElement("button");
-    talkButton.textContent = cardData.talkButton || "Talk";
-    talkButton.style.marginTop = "15px";
-
-    const speechBubble = document.createElement("div");
-    speechBubble.style.marginTop = "10px";
-    speechBubble.style.padding = "8px 12px";
-    speechBubble.style.borderRadius = "10px";
-    speechBubble.style.background = "white";
-    speechBubble.style.color = "black";
-    speechBubble.style.display = "none";
-    speechBubble.style.maxWidth = "80%";
-
-    talkButton.onclick = function () {
-      const random =
-        cardData.responses[
-          Math.floor(Math.random() * cardData.responses.length)
-        ];
-
-      speechBubble.textContent = random;
-      speechBubble.style.display = "block";
-
-      setTimeout(() => {
-        speechBubble.style.display = "none";
-      }, 3000);
-    };
-
-    expandedCard.appendChild(talkButton);
-    expandedCard.appendChild(speechBubble);
   }
 }
 
