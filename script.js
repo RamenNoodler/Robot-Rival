@@ -65,11 +65,11 @@ async function loadCards() {
 
 
 /* =========================
-   OPEN POPUP
+   SAFE OPEN POPUP
 ========================= */
-
 function openPopup(cardData, folderName) {
 
+  // clear previous content
   expandedCard.innerHTML = "";
   overlay.style.display = "flex";
 
@@ -104,26 +104,18 @@ function openPopup(cardData, folderName) {
 
   // ABILITIES
   if (Array.isArray(cardData.abilities) && cardData.abilities.length > 0) {
-
     expandedCard.appendChild(document.createElement("hr"));
-
     cardData.abilities.forEach(ability => {
-
       const abilityBlock = document.createElement("div");
-
       const abilityName = document.createElement("h3");
       abilityName.textContent = ability.name || "";
-
       const abilityDesc = document.createElement("p");
       abilityDesc.style.whiteSpace = "pre-line";
       abilityDesc.textContent = ability.description || "";
-
       abilityBlock.appendChild(abilityName);
       abilityBlock.appendChild(abilityDesc);
-
       expandedCard.appendChild(abilityBlock);
     });
-
     expandedCard.appendChild(document.createElement("hr"));
   }
 
@@ -137,8 +129,6 @@ function openPopup(cardData, folderName) {
 
   // TALK BUTTON & SPEECH BUBBLE
   if (Array.isArray(cardData.responses) && cardData.responses.length > 0) {
-
-    // create random speech bubble
     const randomIndex = Math.floor(Math.random() * cardData.responses.length);
     const randomResponse = cardData.responses[randomIndex];
 
@@ -147,17 +137,18 @@ function openPopup(cardData, folderName) {
     speechBubble.textContent = randomResponse;
     expandedCard.appendChild(speechBubble);
 
-    // create talk button
     const talkButton = document.createElement("button");
     const buttonText = cardData.talkButton && cardData.talkButton.trim() !== "" 
                        ? cardData.talkButton 
                        : "Talk";
     talkButton.textContent = buttonText;
 
-    // append button at the bottom
     expandedCard.appendChild(talkButton);
   }
 
+  // FORCE HIDE INSTANTLY ON LOAD
+  overlay.style.display = "none"; 
+  expandedCard.innerHTML = "";
 }
   /* =========================
      TALK BUTTON
