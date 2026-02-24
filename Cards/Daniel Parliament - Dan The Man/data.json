@@ -4,5 +4,7 @@
   "description": "'Quote from person' - Name ",
   "hp": 70,
   "team": "Team Protostar",
-  "abilities": []
+  "abilities": [],
+  "talkButton": "",
+  "responses": []
 }
