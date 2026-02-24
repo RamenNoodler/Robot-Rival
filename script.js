@@ -63,6 +63,64 @@ async function loadCards() {
   }
 }
 
+function parseColoredText(text) {
+  const colorMap = {
+    r: "red",
+    o: "orange",
+    y: "yellow",
+    g: "green",
+    b: "blue",
+    p: "purple"
+  };
+
+  const container = document.createElement("p");
+  container.style.whiteSpace = "pre-line"; // keeps \n as line breaks
+
+  let i = 0;
+  let currentColor = null;
+  let buffer = "";
+
+  while (i < text.length) {
+    const char = text[i];
+
+    if (char === "\\" && i + 1 < text.length) {
+      const code = text[i + 1];
+
+      // flush previous buffer
+      if (buffer) {
+        const span = document.createElement("span");
+        span.textContent = buffer;
+        if (currentColor) span.style.color = currentColor;
+        container.appendChild(span);
+        buffer = "";
+      }
+
+      if (code === "n") {
+        container.appendChild(document.createElement("br"));
+      } else if (colorMap[code]) {
+        currentColor = colorMap[code];
+      } else if (code === "x") {
+        currentColor = null; // reset color
+      }
+
+      i += 2; // skip \ + code
+      continue;
+    }
+
+    buffer += char;
+    i++;
+  }
+
+  // flush remaining text
+  if (buffer) {
+    const span = document.createElement("span");
+    span.textContent = buffer;
+    if (currentColor) span.style.color = currentColor;
+    container.appendChild(span);
+  }
+
+  return container;
+}
 
 /* =========================
    OPEN POPUP
