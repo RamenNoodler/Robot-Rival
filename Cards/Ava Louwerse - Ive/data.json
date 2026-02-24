@@ -6,4 +6,6 @@
   "hp": "Infinity",
   "team": "Team Protostar",
   "abilities": []
+  "talkButton": "",
+  "responses": []
 }
