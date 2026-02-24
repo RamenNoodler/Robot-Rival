@@ -5,9 +5,8 @@
   "hp": 80,
   "team": "Team Protostar",
   "abilities": [
-  ]
-   "talkButton": " ",
-
+  ],
+  "talkButton": " ",
   "responses": [
     "No.",
     "im good,",
