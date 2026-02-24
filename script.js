@@ -137,8 +137,11 @@ function openPopup(cardData, folderName) {
   /* =========================
      TALK BUTTON
   ========================= */
-
-  if (Array.isArray(cardData.responses) && cardData.responses.length > 0) {
+if (
+  Array.isArray(cardData.responses) &&
+  cardData.responses.length > 0 &&
+  !(Array.isArray(cardData.talkButton) && cardData.talkButton.length === 0)
+) {
 
     const talkButton = document.createElement("button");
     talkButton.textContent = cardData.talkButton || "Talk";
