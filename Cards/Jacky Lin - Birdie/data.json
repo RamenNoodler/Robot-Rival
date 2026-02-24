@@ -4,5 +4,7 @@
   "description": "'Quote from person' - Name ",
   "hp": "Also Infinity",
   "team": "Team Obisidan",
-  "abilities": []
+  "abilities": [],
+  "talkButton": "",
+  "responses": []
 }
