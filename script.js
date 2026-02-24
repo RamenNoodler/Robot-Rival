@@ -77,7 +77,7 @@ function openPopup(cardData, folderName) {
   if (cardData.image) {
     const image = document.createElement("img");
     image.src = `./Cards/${folderName}/${cardData.image}`;
-    image.alt = cardData.name;
+    image.alt = cardData.name || "Card Image";
     expandedCard.appendChild(image);
   }
 
@@ -134,6 +134,31 @@ function openPopup(cardData, folderName) {
     description.textContent = cardData.description;
     expandedCard.appendChild(description);
   }
+
+  // TALK BUTTON & SPEECH BUBBLE
+  if (Array.isArray(cardData.responses) && cardData.responses.length > 0) {
+
+    // create random speech bubble
+    const randomIndex = Math.floor(Math.random() * cardData.responses.length);
+    const randomResponse = cardData.responses[randomIndex];
+
+    const speechBubble = document.createElement("p");
+    speechBubble.className = "speech-bubble";
+    speechBubble.textContent = randomResponse;
+    expandedCard.appendChild(speechBubble);
+
+    // create talk button
+    const talkButton = document.createElement("button");
+    const buttonText = cardData.talkButton && cardData.talkButton.trim() !== "" 
+                       ? cardData.talkButton 
+                       : "Talk";
+    talkButton.textContent = buttonText;
+
+    // append button at the bottom
+    expandedCard.appendChild(talkButton);
+  }
+
+}
   /* =========================
      TALK BUTTON
   ========================= */
